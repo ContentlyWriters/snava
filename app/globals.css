@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brown: #6F371E;
+  --color-brown-dark: #3d1c08;
+  --color-brown-light: #8a4a2a;
+  --color-sky: #8FD4F1;
+  --color-cream: #F3ECE2;
+  --color-sienna: #A2452B;
+  --color-gold: #FED68C;
+  --color-off-white: #FAF7F2;
+
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-accent: 'DM Serif Display', serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-off-white);
+  color: var(--color-brown-dark);
+  overflow-x: hidden;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 22s linear infinite; }
+
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(-30px, 40px); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(20px, -30px); }
+}
+.animate-float-a { animation: float-a 8s ease-in-out infinite; }
+.animate-float-b { animation: float-b 10s ease-in-out infinite; }
+
+@keyframes blob-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-blob { animation: blob-rotate 20s linear infinite; }
+.animate-blob-rev { animation: blob-rotate 20s linear infinite reverse; }
