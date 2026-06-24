@@ -4,7 +4,8 @@
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 const SHOPIFY_STOREFRONT_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
 const API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2024-04/graphql.json`;
-
+console.log("DOMAIN:", SHOPIFY_STORE_DOMAIN);
+console.log("TOKEN:", SHOPIFY_STOREFRONT_TOKEN);
 async function shopifyFetch(query: string, variables?: Record<string, unknown>) {
   const res = await fetch(API_URL, {
     method: "POST",
