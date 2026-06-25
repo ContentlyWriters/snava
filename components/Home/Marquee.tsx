@@ -7,7 +7,7 @@ export default function Marquee() {
   ];
 
   return (
-    <div className="bg-[#8FD4F1] overflow-hidden py-3.5 border-y-2 border-[#5bbce3]">
+    <div className="bg-[#8FD4F1] overflow-hidden py-3 border-y-1 border-[#5bbce3]">
       <div className="flex whitespace-nowrap animate-marquee">
         {items.map((item, i) => (
           <span key={i} className="font-[family-name:var(--font-dm)] italic text-[#3d1c08] text-sm px-6 flex items-center gap-2">

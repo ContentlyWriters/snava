@@ -113,7 +113,7 @@ export default function Products() {
   const header = useReveal();
 
   return (
-    <section id="products" className="py-24 px-5 md:px-12 max-w-7xl mx-auto">
+    <section id="products" className="py-16 px-5 md:px-12 max-w-7xl mx-auto">
       {/* header */}
       <div
         ref={header.ref}

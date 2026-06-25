@@ -42,14 +42,6 @@ const PawIcon = () => (
   </svg>
 );
 
-// Brand palette:
-// #6F371E — Smoked Cacao dark brown  → LEFT panel bg
-// #A2452B — Earth Crunch terracotta  → accents, eyebrow
-// #8FD4F1 — cool sky blue            → LEFT highlights, steps
-// #F3ECE2 — warm cream               → page bg, light text
-// #FED68C — golden honey             → RIGHT highlights, stats
-// #3d1c08 is kept only for the RIGHT panel (deep espresso)
-
 export default function MissionSection() {
   const left = useReveal(0);
   const right = useReveal(200);
@@ -58,11 +50,7 @@ export default function MissionSection() {
     <section className="bg-[#F3ECE2] overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 min-h-[700px]">
 
-        {/* ══════════════════════════════
-            LEFT — Plantation
-            bg: #6F371E (Smoked Cacao dark)
-            accent: #8FD4F1 (sky blue)
-        ══════════════════════════════ */}
+        {/* LEFT — Plantation */}
         <div
           ref={left.ref}
           className={`
@@ -71,57 +59,56 @@ export default function MissionSection() {
             ${left.visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}
           `}
         >
-          {/* Full-bleed image */}
-          <div className="relative w-full" style={{ height: "52%", minHeight: "580px" }}>
-            <Image
-              src="/Earth crunch planted.png"
-              alt="Earth Crunch — planted seed growing"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            {/* Scrim: fades into #6F371E */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(to bottom, rgba(111,55,30,0) 25%, rgba(111,55,30,0.6) 65%, #6F371E 100%)",
-              }}
-            />
-            {/* Floating pill — uses #8FD4F1 blue */}
-            <div className="absolute top-6 left-6">
+          {/* Full-bleed image — mobile pe chhoti, desktop pe badi */}
+          <div
+            className="relative w-full"
+            style={{ height: "280px" }}
+            // mobile: 280px, md+: 580px
+          >
+            <div className="relative w-full h-[280px] md:h-[580px]">
+              <Image
+                src="/Earth crunch planted.png"
+                alt="Earth Crunch — planted seed growing"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
               <div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.18em]"
+                className="absolute inset-0"
                 style={{
-                  background: "rgba(111,55,30,0.7)",
-                  backdropFilter: "blur(12px)",
-                  color: "#8FD4F1",
-                  border: "1px solid rgba(143,212,241,0.35)",
+                  background:
+                    "linear-gradient(to bottom, rgba(111,55,30,0) 25%, rgba(111,55,30,0.6) 65%, #6F371E 100%)",
                 }}
-              >
-                <LeafIcon />
-                Plantation
+              />
+              <div className="absolute top-6 left-6">
+                <div
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.18em]"
+                  style={{
+                    background: "rgba(111,55,30,0.7)",
+                    backdropFilter: "blur(12px)",
+                    color: "#8FD4F1",
+                    border: "1px solid rgba(143,212,241,0.35)",
+                  }}
+                >
+                  <LeafIcon />
+                  Plantation
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Content panel — #6F371E bg */}
+          {/* Content panel */}
           <div
-            className="flex-1 flex flex-col px-8 pt-6 pb-12 md:px-12 md:pb-14"
+            className="flex-1 flex flex-col px-8 pt-6 pb-10 md:px-12 md:pb-14"
             style={{ background: "#6F371E" }}
           >
             <h2
               className="font-[family-name:var(--font-playfair)] font-bold leading-[1.15] mb-4"
-              style={{ fontSize: "clamp(2rem, 3.2vw, 2.7rem)", color: "#F3ECE2" }}
+              style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.7rem)", color: "#F3ECE2" }}
             >
-              A second life awaits.<br />Every jar comes with a seed. 
+              A second life awaits.<br />Every jar comes with a seed.
             </h2>
 
-          
-
-         
-
-            {/* Bottom callout */}
             <div
               className="mt-auto flex items-center gap-3 rounded-2xl px-5 py-4"
               style={{
@@ -139,11 +126,7 @@ export default function MissionSection() {
           </div>
         </div>
 
-        {/* ══════════════════════════════
-            RIGHT — Animal Welfare
-            bg: #A2452B (Earth Crunch terracotta)
-            accent: #FED68C (golden honey)
-        ══════════════════════════════ */}
+        {/* RIGHT — Animal Welfare */}
         <div
           ref={right.ref}
           className={`
@@ -152,8 +135,8 @@ export default function MissionSection() {
             ${right.visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}
           `}
         >
-          {/* Full-bleed image */}
-          <div className="relative w-full" style={{ height: "52%", minHeight: "580px" }}>
+          {/* Full-bleed image — mobile pe chhoti, desktop pe badi */}
+          <div className="relative w-full h-[280px] md:h-[580px]">
             <Image
               src="/cat-dog.jpg"
               alt="Animal welfare — a life protected"
@@ -161,7 +144,6 @@ export default function MissionSection() {
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            {/* Scrim: fades into #A2452B */}
             <div
               className="absolute inset-0"
               style={{
@@ -169,7 +151,6 @@ export default function MissionSection() {
                   "linear-gradient(to bottom, rgba(162,69,43,0) 25%, rgba(162,69,43,0.6) 65%, #A2452B 100%)",
               }}
             />
-            {/* Floating pill — uses #FED68C gold */}
             <div className="absolute top-6 left-6">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.18em]"
@@ -186,23 +167,18 @@ export default function MissionSection() {
             </div>
           </div>
 
-          {/* Content panel — #A2452B bg */}
+          {/* Content panel */}
           <div
-            className="flex-1 flex flex-col px-8 pt-6 pb-12 md:px-12 md:pb-14"
+            className="flex-1 flex flex-col px-8 pt-6 pb-10 md:px-12 md:pb-14"
             style={{ background: "#A2452B" }}
           >
             <h2
               className="font-[family-name:var(--font-playfair)] font-bold leading-[1.15] mb-4"
-              style={{ fontSize: "clamp(2rem, 3.2vw, 2.7rem)", color: "#F3ECE2" }}
+              style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.7rem)", color: "#F3ECE2" }}
             >
-              Every jar gives back.<br />Every purchase protects a life. 
+              Every jar gives back.<br />Every purchase protects a life.
             </h2>
 
-           
-
-           
-
-            {/* Paw prints */}
             <div className="flex items-center gap-1.5 mb-8">
               {Array.from({ length: 5 }).map((_, i) => (
                 <span key={i} style={{ color: "#FED68C", opacity: i < 5 ? 0.9 : 0.3 }}>
@@ -213,11 +189,10 @@ export default function MissionSection() {
                 className="text-[0.72rem] font-medium ml-2"
                 style={{ color: "#F3ECE2", opacity: 0.65 }}
               >
-               A share of our profits helps support animal welfare.
+                A share of our profits helps support animal welfare.
               </span>
             </div>
 
-            {/* Bottom callout */}
             <div
               className="mt-auto flex items-center gap-3 rounded-2xl px-5 py-4"
               style={{

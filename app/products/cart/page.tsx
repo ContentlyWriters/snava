@@ -356,18 +356,27 @@ export default function CartPage() {
                   </span>
                 </div>
 
-                <button
-                  onClick={handleCheckout}
-                  disabled={!cart?.checkoutUrl}
-                  className="w-full mt-8 rounded-full py-4 font-bold uppercase tracking-[0.18em] transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                  style={{
-                    background: "#FED68C",
-                    color: "#3d1c08",
-                    boxShadow: "0 8px 28px rgba(254,214,140,0.35)",
-                  }}
-                >
-                  Proceed To Checkout →
-                </button>
+              <button
+  onClick={handleCheckout}
+  disabled={!cart?.checkoutUrl}
+  className="
+    w-full mt-8 rounded-full
+    py-3.5 md:py-4
+    px-4
+    text-sm md:text-base
+    font-bold uppercase
+    tracking-[0.12em] md:tracking-[0.18em]
+    transition-all hover:-translate-y-1
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0
+  "
+  style={{
+    background: "#FED68C",
+    color: "#3d1c08",
+    boxShadow: "0 8px 28px rgba(254,214,140,0.35)",
+  }}
+>
+  Proceed To Checkout →
+</button>
 
                 <div className="mt-6 space-y-3 text-sm text-[#F3ECE2]/60">
                   <p>✓ Secure Checkout via Shopify</p>
