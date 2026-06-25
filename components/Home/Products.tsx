@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { addToCart as addToShopifyCart } from "@/lib/shopify";
-
+import { useRouter } from "next/navigation";
 
 const VARIANT_IDS: Record<string, string> = {
   cacao: "gid://shopify/ProductVariant/51358603510066",
@@ -14,6 +14,7 @@ const VARIANT_IDS: Record<string, string> = {
 const products = [
   {
     id: "cacao",
+     slug: "smoked-cacao",
     tag: "Smoked Cacao",
     name: "Smoked Cacao",
     price: "₹299",
@@ -31,6 +32,7 @@ const products = [
   },
   {
     id: "earth",
+      slug: "earth-crunch",
     tag: "Earth Crunch",
     name: "Earth Crunch",
     price: "₹249",
@@ -111,7 +113,7 @@ const addToCart = async (product: any) => {
 };
 export default function Products() {
   const header = useReveal();
-
+const router = useRouter();
   return (
     <section id="products" className="py-16 px-5 md:px-12 max-w-7xl mx-auto">
       {/* header */}
@@ -131,12 +133,13 @@ export default function Products() {
         {products.map((p, i) => {
           const card = useReveal(); // eslint-disable-line react-hooks/rules-of-hooks
           return (
-            <div
-              key={p.id}
-              ref={card.ref}
-              className={`relative rounded-[28px] overflow-hidden min-h-[380px] md:min-h-[360px] flex flex-col p-7 md:p-12 cursor-pointer group ${p.bg} ${p.shadow} transition-all duration-700 hover:-translate-y-2 ${card.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-              style={{ transitionDelay: `${i * 120}ms` }}
-            >
+           <div
+  key={p.id}
+  ref={card.ref}
+  onClick={() => router.push(`/products/${p.slug}`)}
+  className={`relative rounded-[28px] overflow-hidden min-h-[380px] md:min-h-[360px] flex flex-col p-7 md:p-12 cursor-pointer group ${p.bg} ${p.shadow} transition-all duration-700 hover:-translate-y-2 ${card.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+  style={{ transitionDelay: `${i * 120}ms` }}
+>
               {/* animated blob */}
               <div className="absolute inset-0 overflow-hidden rounded-[28px] pointer-events-none">
                 <svg
@@ -215,7 +218,10 @@ export default function Products() {
   </div>
 
 <button
-  onClick={() => addToCart(p)}
+  onClick={(e) => {
+    e.stopPropagation();
+    addToCart(p);
+  }}
   className={`px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:scale-105 ${p.btnClass}`}
 >
   Add to Cart
