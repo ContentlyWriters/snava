@@ -42,6 +42,17 @@ const PawIcon = () => (
   </svg>
 );
 
+const SeedIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M12 2C8 2 5 5.5 5 10c0 6 5 12 7 12s7-6 7-12c0-4.5-3-8-7-8z" />
+  </svg>
+);
+
 export default function MissionSection() {
   const left = useReveal(0);
   const right = useReveal(200);
@@ -51,80 +62,102 @@ export default function MissionSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 min-h-[700px]">
 
         {/* LEFT — Plantation */}
-        <div
-          ref={left.ref}
-          className={`
-            relative flex flex-col overflow-hidden
-            transition-all duration-1000 ease-out
-            ${left.visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}
-          `}
-        >
-          {/* Full-bleed image — mobile pe chhoti, desktop pe badi */}
-          <div
-            className="relative w-full"
-            style={{ height: "280px" }}
-            // mobile: 280px, md+: 580px
-          >
-            <div className="relative w-full h-[280px] md:h-[580px]">
-              <Image
-                src="/Earth crunch planted.png"
-                alt="Earth Crunch — planted seed growing"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(to bottom, rgba(111,55,30,0) 25%, rgba(111,55,30,0.6) 65%, #6F371E 100%)",
-                }}
-              />
-              <div className="absolute top-6 left-6">
-                <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.18em]"
-                  style={{
-                    background: "rgba(111,55,30,0.7)",
-                    backdropFilter: "blur(12px)",
-                    color: "#8FD4F1",
-                    border: "1px solid rgba(143,212,241,0.35)",
-                  }}
-                >
-                  <LeafIcon />
-                  Plantation
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* LEFT — Plantation */}
+<div
+  ref={left.ref}
+  className={`
+    relative flex flex-col overflow-hidden
+    transition-all duration-1000 ease-out
+    ${left.visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}
+  `}
+>
+  {/* Image */}
+  <div className="relative w-full h-[280px] md:h-[580px]">
+    <Image
+      src="/Earth crunch planted.png"
+      alt="Earth Crunch — planted seed growing"
+      fill
+      className="object-cover"
+      sizes="(max-width: 768px) 100vw, 50vw"
+    />
 
-          {/* Content panel */}
-          <div
-            className="flex-1 flex flex-col px-8 pt-6 pb-10 md:px-12 md:pb-14"
-            style={{ background: "#6F371E" }}
-          >
-            <h2
-              className="font-[family-name:var(--font-playfair)] font-bold leading-[1.15] mb-4"
-              style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.7rem)", color: "#F3ECE2" }}
-            >
-              A second life awaits.<br />Every jar comes with a seed.
-            </h2>
+    <div
+      className="absolute inset-0"
+      style={{
+        background:
+          "linear-gradient(to bottom, rgba(111,55,30,0) 25%, rgba(111,55,30,0.6) 65%, #6F371E 100%)",
+      }}
+    />
 
-            <div
-              className="mt-auto flex items-center gap-3 rounded-2xl px-5 py-4"
-              style={{
-                background: "rgba(143,212,241,0.07)",
-                border: "1px solid rgba(143,212,241,0.18)",
-              }}
-            >
-              <span style={{ color: "#8FD4F1" }}>
-                <LeafIcon />
-              </span>
-              <span className="text-[0.8rem] leading-snug" style={{ color: "#8FD4F1" }}>
-                Rinse, Plant and watch something new grow.
-              </span>
-            </div>
-          </div>
-        </div>
+    <div className="absolute top-6 left-6">
+      <div
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.18em]"
+        style={{
+          background: "rgba(111,55,30,0.7)",
+          backdropFilter: "blur(12px)",
+          color: "#8FD4F1",
+          border: "1px solid rgba(143,212,241,0.35)",
+        }}
+      >
+        <LeafIcon />
+        Plantation
+      </div>
+    </div>
+  </div>
+
+  {/* Content */}
+  <div
+    className="flex-1 flex flex-col px-8 pt-6 pb-10 md:px-12 md:pb-14"
+    style={{ background: "#6F371E" }}
+  >
+    <h2
+      className="font-[family-name:var(--font-playfair)] font-bold leading-[1.15] mb-4"
+      style={{
+        fontSize: "clamp(1.6rem, 3.2vw, 2.7rem)",
+        color: "#F3ECE2",
+      }}
+    >
+      A second life awaits.
+      <br />
+      Every jar comes with a seed.
+    </h2>
+
+    <div className="flex items-center gap-1.5 mb-8">
+     {Array.from({ length: 5 }).map((_, i) => (
+  <span key={i} style={{ color: "#8FD4F1", opacity: 0.9 }}>
+    <SeedIcon />
+  </span>
+))}
+
+      <span
+        className="text-[0.72rem] font-medium ml-2"
+        style={{ color: "#F3ECE2", opacity: 0.65 }}
+      >
+        Every jar includes a seed to begin a new life.
+      </span>
+    </div>
+
+    <div
+      className="mt-auto flex items-center gap-3 rounded-2xl px-5 py-4"
+      style={{
+        background: "rgba(143,212,241,0.07)",
+        border: "1px solid rgba(143,212,241,0.18)",
+      }}
+    >
+      <span
+                className="text-[0.72rem] font-medium ml-2"
+                style={{ color: "#8FD4F1", opacity: 0.65 }}
+              >
+    <SeedIcon />
+      </span>
+
+      
+        <span className="text-[0.8rem] leading-snug" style={{ color: "#8FD4F1", opacity: 0.85 }}>
+        Rinse, Plant and watch something new grow.
+      </span>
+    </div>
+  </div>
+</div>
 
         {/* RIGHT — Animal Welfare */}
         <div
