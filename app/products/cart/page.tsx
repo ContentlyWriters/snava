@@ -40,7 +40,7 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
   });
 }
 
-const SHIPPING_CHARGE = 49;
+const SHIPPING_CHARGE = 79;
 const FREE_SHIPPING_MIN_ITEMS = 2;
 
 export default function CartPage() {
