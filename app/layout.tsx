@@ -3,9 +3,9 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "snava. — Craft Peanut Butter",
+  title: "Best Peanut Butter in India | Natural, High Protein | Snava ",
   description:
-    "Real peanuts. Bold flavors. Nothing in between. Smoked Cacao & Earth Crunch.",
+    "Discover India's best craft peanut butter. High protein, zero trans fat, no palm oil. 100% natural, lab-tested. Free shipping on combos. Order now.",
 };
 
 export default function RootLayout({
