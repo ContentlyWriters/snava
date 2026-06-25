@@ -84,8 +84,7 @@ export default function Story() {
           >
             <div className="space-y-5">
               <p className="text-[#5a3520] font-light leading-[1.95] text-sm md:text-[0.93rem]">
-                There came a moment when I looked at everything on the shelf — all the labels,
-                all the promises — and felt nothing. No honesty. No soul. Just products.
+                There came a moment when I tried everything out there and still felt empty. No substance. No story. Just packaging.
               </p>
               <p className="text-[#5a3520] font-light leading-[1.95] text-sm md:text-[0.93rem]">
                 So we asked a different question. What if food could do more than feed you?
@@ -103,10 +102,10 @@ export default function Story() {
                 className="font-[family-name:var(--font-playfair)] italic text-[#3d1c08] block leading-none mb-1.5"
                 style={{ fontSize: "2rem" }}
               >
-                Akshat
+                Akshat Sharma
               </span>
               <span className="text-[#A2452B] text-[0.62rem] font-bold uppercase tracking-[0.2em]">
-                Founder · Snava Naturam
+                Founder · Snava
               </span>
             </div>
           </div>
@@ -149,8 +148,7 @@ export default function Story() {
                 className="font-[family-name:var(--font-playfair)] italic text-[#3d1c08] leading-[1.6]"
                 style={{ fontSize: "clamp(0.95rem, 1.6vw, 1rem)" }}
               >
-                What if every jar could give something back — to your body,
-                to the earth, to the lives around us?
+               What if food could be honest — with your body, with the earth, with you?
               </p>
             </div>
           </div>

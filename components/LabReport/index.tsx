@@ -11,16 +11,16 @@ const reports = [
   {
     id: 1,
     product: "Smoked Cacao",
-    batch: "SC-001",
-    date: "July 2026",
+    batch: "CCM190626",
+    date: "24 JUNE 2026",
     pdf: "/lab-reports/sc001.pdf",
   },
 
   {
     id: 2,
     product: "Earth Crunch",
-    batch: "EC-001",
-    date: "July 2026",
+    batch: "CR170626",
+    date: "24 JUNE 2026",
     pdf: "/lab-reports/ec001.pdf",
   },
  
@@ -115,19 +115,7 @@ export default function LabReportsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    <span className="px-3 py-1 rounded-full bg-[#F3ECE2] text-[#6F371E] text-xs font-medium">
-                      Heavy Metals
-                    </span>
-
-                    <span className="px-3 py-1 rounded-full bg-[#F3ECE2] text-[#6F371E] text-xs font-medium">
-                      Microbiology
-                    </span>
-
-                    <span className="px-3 py-1 rounded-full bg-[#F3ECE2] text-[#6F371E] text-xs font-medium">
-                      Quality Tested
-                    </span>
-                  </div>
+                 
 
                   <div className="mt-8 flex gap-3">
                     <button

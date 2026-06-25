@@ -43,12 +43,15 @@ const nutritionStrip = [
 ];
 
 const ingredients = [
-  "Roasted Peanuts 73%",
-  "Chocolate Paste",
-  "Sea Salt",
-  "Zero Additives",
-  "No Palm Oil",
-  "No Refined Sugar",
+ "Low Cholesterol",
+
+"No Prescrvatives",
+
+"Vegctable Protcin",
+
+"Gullt - Free",
+
+"Trans Pat Frce",
 ];
 const BASE_PRICE = 299;
 const MRP = 449;

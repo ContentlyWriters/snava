@@ -45,12 +45,11 @@ export default function ShippingPolicyPage() {
               </li>
 
               <li>
-                • Free shipping on all prepaid orders.
+                • Free shipping on all combo order.
               </li>
 
               <li>
-                • Shipping charges for other orders are calculated at
-                checkout — no hidden fees, no surprises.
+                • Shipping charges and taxes are calculated at checkout — no hidden fees, no surprises.
               </li>
 
               <li>
@@ -100,7 +99,7 @@ export default function ShippingPolicyPage() {
                   </p>
 
                   <p className="text-[#3D1C08] text-xl font-bold">
-                    3–5 Days
+                    5–7 Days
                   </p>
                 </div>
 
@@ -110,7 +109,7 @@ export default function ShippingPolicyPage() {
                   </p>
 
                   <p className="text-[#3D1C08] text-xl font-bold">
-                    3–7 Days
+                    7–9 Days
                   </p>
                 </div>
 
@@ -120,7 +119,7 @@ export default function ShippingPolicyPage() {
                   </p>
 
                   <p className="text-[#3D1C08] text-xl font-bold">
-                    5–9 Days
+                    9–15 Days
                   </p>
                 </div>
 

@@ -114,7 +114,7 @@ export default function RefundCancellationPolicyPage() {
                 </li>
 
                 <li>
-                  • A full refund will be issued in such cases.
+                  • A full refund will be issued in such cases, excluding shipping charges.
                 </li>
               </ul>
             </div>

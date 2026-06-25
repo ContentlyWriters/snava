@@ -42,11 +42,17 @@ const nutritionStrip = [
 ];
 
 const ingredients = [
-  "Roasted Peanuts 91%",
-  "Sea Salt",
-  "Zero Additives",
-  "No Palm Oil",
-  "No Refined Sugar",
+ "Low Cholesterol",
+
+"No Preservatives",
+
+"Vegctable Protcin",
+
+"Guitt - Free",
+
+"Trans Pat Free",
+
+"Trans Fat Frve",
 ];
 
 const BASE_PRICE = 249;
