@@ -11,14 +11,12 @@ import {
   type ShopifyCartLine,
 } from "@/lib/shopify";
 
-// ─── Derived display type ─────────────────────────────────────────────────────
-
 interface DisplayLine {
   lineId: string;
   variantId: string;
   name: string;
   variantTitle: string;
-  price: number;       // per unit, in currency units (e.g. 249)
+  price: number;
   quantity: number;
   image: string;
   altText: string;
@@ -42,7 +40,8 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
   });
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+const SHIPPING_CHARGE = 49;
+const FREE_SHIPPING_MIN_ITEMS = 2;
 
 export default function CartPage() {
   const [cart, setCart] = useState<ShopifyCart | null>(null);
@@ -51,8 +50,6 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // ── Fetch cart on mount ───────────────────────────────────────────────────
 
   const fetchCart = useCallback(async () => {
     setLoading(true);
@@ -72,12 +69,9 @@ export default function CartPage() {
 
   useEffect(() => {
     fetchCart();
-    // Also refresh when the product page dispatches cartUpdated
     window.addEventListener("cartUpdated", fetchCart);
     return () => window.removeEventListener("cartUpdated", fetchCart);
   }, [fetchCart]);
-
-  // ── Quantity update ───────────────────────────────────────────────────────
 
   const updateQuantity = async (lineId: string, newQty: number) => {
     if (!cart) return;
@@ -96,8 +90,6 @@ export default function CartPage() {
     }
   };
 
-  // ── Remove item ───────────────────────────────────────────────────────────
-
   const removeItem = async (lineId: string) => {
     if (!cart) return;
     setUpdatingId(lineId);
@@ -106,7 +98,6 @@ export default function CartPage() {
       const updated = await removeCartLines(cart.id, [lineId]);
       setCart(updated);
       setLines(toDisplayLines(updated));
-      // Keep the navbar count in sync
       window.dispatchEvent(new CustomEvent("shopifyCartUpdated", { detail: updated }));
     } catch (e) {
       setError("Couldn't remove item. Please try again.");
@@ -116,20 +107,19 @@ export default function CartPage() {
     }
   };
 
-  // ── Checkout ──────────────────────────────────────────────────────────────
-
   const handleCheckout = () => {
     if (cart?.checkoutUrl) {
       window.location.href = cart.checkoutUrl;
     }
   };
 
-  // ── Derived totals ────────────────────────────────────────────────────────
-
   const subtotal = cart ? parseFloat(cart.cost.subtotalAmount.amount) : 0;
   const totalItems = cart?.totalQuantity ?? 0;
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // Shipping logic: free if 2+ items, else ₹49
+  const isFreeShipping = totalItems >= FREE_SHIPPING_MIN_ITEMS;
+  const shippingCharge = isFreeShipping ? 0 : SHIPPING_CHARGE;
+  const grandTotal = subtotal + shippingCharge;
 
   if (!mounted) return null;
 
@@ -152,7 +142,6 @@ export default function CartPage() {
         </div>
       </section>
 
-      {/* Error banner */}
       {error && (
         <div className="max-w-7xl mx-auto px-6 pt-6">
           <p className="rounded-2xl bg-red-100 border border-red-300 text-red-700 px-5 py-3 text-sm">
@@ -161,7 +150,6 @@ export default function CartPage() {
         </div>
       )}
 
-      {/* Loading skeleton */}
       {loading && (
         <section className="max-w-5xl mx-auto px-6 py-24 text-center">
           <div className="animate-pulse flex flex-col items-center gap-4">
@@ -172,7 +160,6 @@ export default function CartPage() {
         </section>
       )}
 
-      {/* Empty Cart */}
       {!loading && lines.length === 0 && (
         <section className="max-w-5xl mx-auto px-6 py-24 text-center">
           <div className="text-7xl mb-6">🥜</div>
@@ -191,13 +178,48 @@ export default function CartPage() {
         </section>
       )}
 
-      {/* Cart Items */}
       {!loading && lines.length > 0 && (
         <section className="max-w-7xl mx-auto px-6 md:px-10 py-12">
           <div className="grid lg:grid-cols-[1.6fr_0.8fr] gap-10">
 
             {/* Left — line items */}
             <div className="space-y-6">
+
+              {/* Free shipping nudge — only show when 1 item */}
+              {!isFreeShipping && (
+                <div
+                  className="rounded-2xl px-5 py-4 flex items-center gap-3"
+                  style={{
+                    background: "rgba(143,212,241,0.1)",
+                    border: "1px solid rgba(143,212,241,0.25)",
+                  }}
+                >
+                  <span className="text-xl">🚚</span>
+                  <p className="text-sm font-medium" style={{ color: "#3d1c08" }}>
+                    Add 1 more item to get{" "}
+                    <span className="font-bold text-[#A2452B]">FREE shipping!</span>
+                    {" "}(Save ₹{SHIPPING_CHARGE})
+                  </p>
+                </div>
+              )}
+
+              {isFreeShipping && (
+                <div
+                  className="rounded-2xl px-5 py-4 flex items-center gap-3"
+                  style={{
+                    background: "rgba(74,222,128,0.1)",
+                    border: "1px solid rgba(74,222,128,0.25)",
+                  }}
+                >
+                  <span className="text-xl">🎉</span>
+                  <p className="text-sm font-medium" style={{ color: "#3d1c08" }}>
+                    You&apos;ve got{" "}
+                    <span className="font-bold text-green-600">FREE shipping</span>
+                    {" "}on this order!
+                  </p>
+                </div>
+              )}
+
               {lines.map((item) => {
                 const isBusy = updatingId === item.lineId;
                 return (
@@ -208,7 +230,6 @@ export default function CartPage() {
                     }`}
                   >
                     <div className="flex flex-col md:flex-row gap-6">
-                      {/* Image */}
                       <div className="relative w-full md:w-40 h-40 rounded-2xl overflow-hidden bg-[#F8F3EC] flex-shrink-0">
                         {item.image ? (
                           <Image
@@ -224,7 +245,6 @@ export default function CartPage() {
                         )}
                       </div>
 
-                      {/* Info */}
                       <div className="flex-1">
                         <div className="flex flex-col md:flex-row md:justify-between gap-4">
                           <div>
@@ -250,7 +270,6 @@ export default function CartPage() {
                         </div>
 
                         <div className="flex flex-wrap items-center justify-between gap-5 mt-8">
-                          {/* Quantity */}
                           <div
                             className="flex items-center rounded-full overflow-hidden"
                             style={{
@@ -309,12 +328,23 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between text-[#F3ECE2]/80">
                     <span>Shipping</span>
-                    <span className="text-[#8FD4F1]">Free</span>
+                    {isFreeShipping ? (
+                      <span className="text-green-400 font-semibold">Free</span>
+                    ) : (
+                      <span className="text-[#FED68C]">{formatPrice(SHIPPING_CHARGE)}</span>
+                    )}
                   </div>
-                  <div className="flex justify-between text-[#F3ECE2]/80">
+                  {!isFreeShipping && (
+                    <div className="text-right">
+                      <p className="text-[0.68rem] text-[#F3ECE2]/40 leading-relaxed">
+                        Add 1 more item for free shipping
+                      </p>
+                    </div>
+                  )}
+                  {/* <div className="flex justify-between text-[#F3ECE2]/80">
                     <span>Tax</span>
                     <span>Included</span>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="h-px bg-white/10 my-6" />
@@ -322,7 +352,7 @@ export default function CartPage() {
                 <div className="flex justify-between items-center">
                   <span className="text-[#F3ECE2] text-lg font-semibold">Total</span>
                   <span className="text-[#FED68C] text-3xl font-bold">
-                    {formatPrice(subtotal)}
+                    {formatPrice(grandTotal)}
                   </span>
                 </div>
 

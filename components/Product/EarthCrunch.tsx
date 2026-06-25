@@ -49,11 +49,15 @@ const ingredients = [
   "No Refined Sugar",
 ];
 
+const BASE_PRICE = 249;
+const MRP = 399;
+const DISCOUNT_PCT = Math.round(((MRP - BASE_PRICE) / MRP) * 100);
+
 export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
-  const basePrice = 249;
-  const totalPrice = basePrice * qty;
+  const totalPrice = BASE_PRICE * qty;
+  const totalMrp   = MRP * qty;
   const hero  = useReveal(0);
   const strip = useReveal(100);
   const desc  = useReveal(150);
@@ -210,20 +214,49 @@ export default function ProductPage() {
             ))}
           </div>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-3 mb-7">
-            <span
-              className="font-[family-name:var(--font-playfair)] font-bold leading-none"
-              style={{ color: "#FED68C", fontSize: "clamp(2rem, 3.5vw, 2.6rem)" }}
-            >
-              ₹{totalPrice}
-            </span>
-            <span
-              className="text-[0.78rem] font-light"
-              style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}
-            >
-              / 500g
-            </span>
+          {/* ── PRICE SECTION ── */}
+          <div className="mb-7">
+            {/* MRP + Discount badge row */}
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <span
+                className="text-[0.65rem] font-semibold uppercase tracking-widest"
+                style={{ color: "rgba(243,236,226,0.35)" }}
+              >
+                MRP
+              </span>
+              <span
+                className="line-through text-sm"
+                style={{ color: "rgba(243,236,226,0.35)" }}
+              >
+                ₹{totalMrp}
+              </span>
+              <span
+                className="text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5"
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "#4ade80",
+                }}
+              >
+                {DISCOUNT_PCT}% OFF
+              </span>
+            </div>
+
+            {/* Final price */}
+            <div className="flex items-baseline gap-3">
+              <span
+                className="font-[family-name:var(--font-playfair)] font-bold leading-none"
+                style={{ color: "#FED68C", fontSize: "clamp(2rem, 3.5vw, 2.6rem)" }}
+              >
+                ₹{totalPrice}
+              </span>
+              <span
+                className="text-[0.78rem] font-light"
+                style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}
+              >
+                / 500g
+              </span>
+            </div>
           </div>
 
           {/* Quantity selector */}

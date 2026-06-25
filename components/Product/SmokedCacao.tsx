@@ -50,16 +50,18 @@ const ingredients = [
   "No Palm Oil",
   "No Refined Sugar",
 ];
-
+const BASE_PRICE = 299;
+const MRP = 449;
+const DISCOUNT_PCT = Math.round(((MRP - BASE_PRICE) / MRP) * 100);
 export default function ProductPage() {
   const [qty, setQty] = useState(1);
-    const basePrice = 299;
-const totalPrice = basePrice * qty;
-  const hero   = useReveal(0);
-  const strip  = useReveal(100);
-  const desc   = useReveal(150);
-const [activeImage, setActiveImage] = useState(0);
-const [adding, setAdding] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const totalPrice = BASE_PRICE * qty;
+  const totalMrp   = MRP * qty;
+  const hero  = useReveal(0);
+  const strip = useReveal(100);
+  const desc  = useReveal(150);
+  const [activeImage, setActiveImage] = useState(0);
 
   const handleAddToCart = async () => {
     if (adding) return;
@@ -219,19 +221,48 @@ const productImages = [
           </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-3 mb-7">
-            <span
-  className="font-[family-name:var(--font-playfair)] font-bold leading-none"
-  style={{ color: "#FED68C", fontSize: "clamp(2rem, 3.5vw, 2.6rem)" }}
->
-  ₹{totalPrice}
-</span>
-            <span
-              className="text-[0.78rem] font-light"
-              style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}
-            >
-              / 500g
-            </span>
+           <div className="mb-7">
+            {/* MRP + Discount badge row */}
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <span
+                className="text-[0.65rem] font-semibold uppercase tracking-widest"
+                style={{ color: "rgba(243,236,226,0.35)" }}
+              >
+                MRP
+              </span>
+              <span
+                className="line-through text-sm"
+                style={{ color: "rgba(243,236,226,0.35)" }}
+              >
+                ₹{totalMrp}
+              </span>
+              <span
+                className="text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5"
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "#4ade80",
+                }}
+              >
+                {DISCOUNT_PCT}% OFF
+              </span>
+            </div>
+
+            {/* Final price */}
+            <div className="flex items-baseline gap-3">
+              <span
+                className="font-[family-name:var(--font-playfair)] font-bold leading-none"
+                style={{ color: "#FED68C", fontSize: "clamp(2rem, 3.5vw, 2.6rem)" }}
+              >
+                ₹{totalPrice}
+              </span>
+              <span
+                className="text-[0.78rem] font-light"
+                style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}
+              >
+                / 500g
+              </span>
+            </div>
           </div>
 
           {/* Quantity selector */}
