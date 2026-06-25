@@ -90,7 +90,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[#F3ECE2]/25 text-xs text-center md:text-left">
+          <p className="text-[#F3ECE2]/25 text-xs text-center md:text-left uppercase">
             © 2026 Snava naturam Private Limited. All rights reserved.
           </p>
           <div className="flex flex-col items-center md:items-end gap-1">
