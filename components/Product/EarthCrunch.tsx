@@ -47,6 +47,7 @@ const ingredients = [
   "Vegetable Protein",
   "Guilt-Free",
   "Trans Fat Free",
+  "no palm oil ",
 ];
 
 const BASE_PRICE = 249;
