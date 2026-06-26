@@ -1,8 +1,8 @@
 export default function Marquee() {
   const items = [
-    "Free shipping on all combo orders.", "Order Now — Limited Stock", "Limited Time Offer",
+    "Buy 2 Products & Get Free Shipping", "Order Now — Limited Stock", "Limited Time Offer", "Pan India Delivery Available",
     "Only a Few Left — Hurry!", "Grab Yours Before It's Gone",
-    "Free shipping on all combo orders.", "Order Now — Limited Stock", "Limited Time Offer",
+    "Buy 2 Products & Get Free Shipping", "Order Now — Limited Stock", "Limited Time Offer", "Pan India Delivery Available",
     "Only a Few Left — Hurry!", "Grab Yours Before It's Gone",
   ];
 
