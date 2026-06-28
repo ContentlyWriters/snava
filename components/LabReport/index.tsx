@@ -11,7 +11,7 @@ const reports = [
   {
     id: 1,
     product: "Smoked Cacao",
-    batch: "CCM190626",
+    batch: "SC2617301",
     date: "24 JUNE 2026",
     pdf: "/lab-reports/sc001.pdf",
   },
@@ -19,7 +19,7 @@ const reports = [
   {
     id: 2,
     product: "Earth Crunch",
-    batch: "CR170626",
+    batch: "EC2617301",
     date: "24 JUNE 2026",
     pdf: "/lab-reports/ec001.pdf",
   },
