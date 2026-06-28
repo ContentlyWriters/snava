@@ -64,7 +64,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-[#F3ECE2]/50 hover:text-[#F3ECE2] transition-colors text-sm"
                 >
-                  Youtube
+                  YouTube
                 </Link>
               </li>
 
