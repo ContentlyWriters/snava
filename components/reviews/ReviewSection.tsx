@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReviewCard from "./ReviewCard";
 import ImageViewer from "./ImageViewer";
 import Marquee from "./Marquee";
@@ -9,6 +10,11 @@ import RatingBadge from "./RatingBadge";
 import { JudgeMeReview, ReviewsApiResponse } from "./types";
 import { averageRating, avatarGradient, featuredReviews, initials, ratingDistribution } from "./utils";
 import StarRating from "./StarRating";
+
+// How many review cards are visible at once in the main wall below the
+// marquee. 6 is tuned for the 3-column desktop grid (2 full rows) — drop it
+// to 3 if you want a tighter page.
+const PAGE_SIZE = 3;
 
 function QuotePill({ review }: { review: JudgeMeReview }) {
   const [from, to] = avatarGradient(review.reviewer.name);
@@ -32,7 +38,7 @@ function QuotePill({ review }: { review: JudgeMeReview }) {
 
 function ReviewSkeleton() {
   return (
-    <div className="mb-6 break-inside-avoid animate-pulse overflow-hidden rounded-[26px] border border-white/[0.06] bg-white/[0.025] p-6">
+    <div className="h-[440px] animate-pulse overflow-hidden rounded-[26px] border border-white/[0.06] bg-white/[0.025] p-6">
       <div className="flex items-center gap-4">
         <div className="h-12 w-12 rounded-full bg-white/[0.06]" />
         <div className="flex-1 space-y-2">
@@ -55,6 +61,8 @@ export default function ReviewSection() {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerImages, setViewerImages] = useState<string[]>([]);
   const [viewerIndex, setViewerIndex] = useState(0);
+  const [page, setPage] = useState(0);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -72,10 +80,22 @@ export default function ReviewSection() {
   const rating = useMemo(() => averageRating(reviews), [reviews]);
   const distribution = useMemo(() => ratingDistribution(reviews), [reviews]);
 
+  const totalPages = Math.max(1, Math.ceil(reviews.length / PAGE_SIZE));
+  const visibleReviews = useMemo(
+    () => reviews.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE),
+    [reviews, page]
+  );
+
   const openViewer = (images: string[], index: number) => {
     setViewerImages(images);
     setViewerIndex(index);
     setViewerOpen(true);
+  };
+
+  // Wraps around in both directions — last page's "Read More" loops back to page 1.
+  const goTo = (next: number) => {
+    setPage(((next % totalPages) + totalPages) % totalPages);
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
   return (
@@ -139,22 +159,66 @@ export default function ReviewSection() {
           </div>
         )}
 
-        {/* Masonry wall */}
-        {loading ? (
-          <div className="columns-1 gap-6 md:columns-2 xl:columns-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <ReviewSkeleton key={i} />
-            ))}
-          </div>
-        ) : reviews.length === 0 ? (
-          <p className="text-center text-white/40">No reviews yet — be the first to share one.</p>
-        ) : (
-          <div className="columns-1 gap-6 md:columns-2 xl:columns-3">
-            {reviews.map((review, i) => (
-              <div key={review.id} className="mb-6 break-inside-avoid">
-                <ReviewCard review={review} index={i} onImageClick={openViewer} />
-              </div>
-            ))}
+        {/* Review wall — fixed-size cards, paginated, one batch visible at a time */}
+        <div ref={gridRef}>
+          {loading ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <ReviewSkeleton key={i} />
+              ))}
+            </div>
+          ) : reviews.length === 0 ? (
+            <p className="text-center text-white/40">No reviews yet — be the first to share one.</p>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={page}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
+              >
+                {visibleReviews.map((review, i) => (
+                  <ReviewCard key={review.id} review={review} index={i} onImageClick={openViewer} />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* Pagination — wraps around, so "Read More" from the last page loops to the first */}
+        {!loading && totalPages > 1 && (
+          <div className="mt-12 flex items-center justify-center gap-4">
+            <button
+              onClick={() => goTo(page - 1)}
+              aria-label="Previous reviews"
+              className="rounded-full border border-white/10 bg-white/[0.04] p-2.5 text-white/60 backdrop-blur-md transition hover:border-[#D99A4E]/40 hover:text-white"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to reviews page ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === page ? "w-6 bg-[#D99A4E]" : "w-1.5 bg-white/15 hover:bg-white/30"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => goTo(page + 1)}
+              aria-label="Read more reviews"
+              className="group flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white/70 backdrop-blur-md transition hover:border-[#D99A4E]/40 hover:text-white"
+            >
+              Read More
+              <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-
+import Script from "next/script";
 export const metadata: Metadata = {
   title: "Best Peanut Butter in India | Natural, High Protein | Snava ",
   description:
@@ -16,6 +16,44 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+  <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-X5X4ZXEPSP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-X5X4ZXEPSP');
+          `}
+        </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Corporation",
+              "name": "Snava",
+              "url": "https://www.snava.in/",
+              "logo": "https://www.snava.in/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsnava-logo.svg&w=1920&q=75",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91 8823970988",
+                "contactType": "customer service",
+                "contactOption": "TollFree",
+                "areaServed": "IN",
+                "availableLanguage": "en",
+              },
+              "sameAs": [
+                "https://www.instagram.com/snava.in",
+                "https://www.youtube.com/@snavabloom",
+            
+              ],
+            }),
+          }}
+        />
+        
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

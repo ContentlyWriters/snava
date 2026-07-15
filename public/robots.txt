@@ -1,0 +1,18 @@
+
+# Disallow crawling
+User-agent: *
+
+Disallow: /policy/
+
+
+
+# Allow crawling 
+Allow: /blog/
+Allow: /
+Allow: /products/smoked-cacao
+Allow: /products/earth-crunch
+
+
+
+# Sitemap location for better indexing
+Sitemap: https://www.snava.in/sitemap
