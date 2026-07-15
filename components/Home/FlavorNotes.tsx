@@ -72,7 +72,7 @@ export default function MissionSection() {
   `}
 >
   {/* Image */}
-  <div className="relative w-full h-[280px] md:h-[580px]">
+  <div className="relative w-full h-[240px] md:h-[360px]">
     <Image
       src="/Earth crunch planted.png"
       alt="Earth Crunch — planted seed growing"
@@ -169,7 +169,7 @@ export default function MissionSection() {
           `}
         >
           {/* Full-bleed image — mobile pe chhoti, desktop pe badi */}
-          <div className="relative w-full h-[280px] md:h-[580px]">
+          <div className="relative w-full h-[240px] md:h-[360px]">
             <Image
               src="/cat-dog.jpg"
               alt="Animal welfare — a life protected"
