@@ -58,7 +58,7 @@ export default function MissionSection() {
   const right = useReveal(200);
 
   return (
-    <section className="bg-[#F3ECE2] overflow-hidden">
+    <section className="bg-[#F3ECE2] overflow-hidden mt-[40px]">
       <div className="grid grid-cols-1 md:grid-cols-2 min-h-[700px]">
 
         {/* LEFT — Plantation */}
