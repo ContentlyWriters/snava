@@ -9,8 +9,7 @@ export async function generateSitemap() {
   ];
 
   const dynamicUrls = [
-      { loc: "/blog", lastmod: "2024-11-26", priority: 0.9 },
-    { loc: "/blog/", lastmod: "2024-11-26", priority: 0.9 },
+     
     { loc: "/products/smoked-cacao", lastmod: "2024-11-25", priority: 0.9 },
      { loc: "/products/earth-crunch", lastmod: "2024-11-25", priority: 0.9 },
    

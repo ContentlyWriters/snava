@@ -7,7 +7,7 @@ Disallow: /policy/
 
 
 # Allow crawling 
-Allow: /blog/
+
 Allow: /
 Allow: /products/smoked-cacao
 Allow: /products/earth-crunch
