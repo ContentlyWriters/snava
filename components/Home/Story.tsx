@@ -36,7 +36,7 @@ export default function Story() {
       <div
         ref={hero.ref}
         className={`
-          relative px-6 py-6 md:px-16 md:py-24 overflow-hidden
+          relative px-6 py-6 md:px-16 md:py-8 overflow-hidden
           transition-all duration-700
           ${hero.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
         `}
