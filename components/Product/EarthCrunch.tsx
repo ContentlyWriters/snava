@@ -577,6 +577,7 @@ export default function ProductPage() {
                 </tbody>
               </table>
 
+
               <p className="mt-3 md:mt-4 text-[0.62rem] leading-relaxed" style={{ color: "rgba(243,236,226,0.45)" }}>
                 *Percentage RDA values are approximate and based on a standard adult diet.
               </p>
