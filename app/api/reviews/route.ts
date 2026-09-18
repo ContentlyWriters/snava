@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { getReviews } from "@/lib/judgeme";
 
-export const revalidate = 300;
+// This route reads per-request query params (page/limit) via request.url,
+// so it can't be statically pre-rendered — force it to run dynamically
+// on every request instead of trying (and failing) to cache it.
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
