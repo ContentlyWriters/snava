@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { addToCart } from "@/lib/shopify";
+import { track } from "@/lib/analytics";
 
 const SMOKED_CACAO_VARIANT_GID = "gid://shopify/ProductVariant/51358603510066";
 
@@ -64,11 +65,24 @@ export default function ProductPage() {
   const desc  = useReveal(150);
   const [activeImage, setActiveImage] = useState(0);
 
+  useEffect(() => {
+    track("view_item", {
+      value: BASE_PRICE,
+      currency: "INR",
+      items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: BASE_PRICE, quantity: 1 }],
+    });
+  }, []);
+
   const handleAddToCart = async () => {
     if (adding) return;
     setAdding(true);
     try {
       await addToCart(SMOKED_CACAO_VARIANT_GID, qty);
+      track("add_to_cart", {
+        value: totalPrice,
+        currency: "INR",
+        items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: BASE_PRICE, quantity: qty }],
+      });
       window.dispatchEvent(new Event("cartUpdated"));
       toast.custom((t) => (
         <div

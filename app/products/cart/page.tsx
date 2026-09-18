@@ -10,6 +10,7 @@ import {
   type ShopifyCart,
   type ShopifyCartLine,
 } from "@/lib/shopify";
+import { appendUTMsToCheckoutUrl, track } from "@/lib/analytics";
 
 interface DisplayLine {
   lineId: string;
@@ -109,7 +110,21 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     if (cart?.checkoutUrl) {
-      window.location.href = cart.checkoutUrl;
+      track("begin_checkout", {
+        value: grandTotal,
+        currency: cart.cost.totalAmount.currencyCode,
+        items: lines.map((l) => ({
+          id: l.variantId,
+          name: l.name,
+          price: l.price,
+          quantity: l.quantity,
+        })),
+      });
+      // Carry campaign attribution (utm_source etc.) through to Shopify's
+      // checkout so orders stop showing up as blank/"direct" in referrer
+      // reports — see lib/analytics.ts for why this is necessary on a
+      // headless storefront.
+      window.location.href = appendUTMsToCheckoutUrl(cart.checkoutUrl);
     }
   };
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { addToCart as addToShopifyCart } from "@/lib/shopify";
+import { track } from "@/lib/analytics";
 import { useRouter } from "next/navigation";
 
 const VARIANT_IDS: Record<string, string> = {
@@ -74,6 +75,12 @@ const addToCart = async (product: any) => {
     const variantId = VARIANT_IDS[product.id];
 
     await addToShopifyCart(variantId, 1);
+
+    track("add_to_cart", {
+      value: parseInt(product.price.replace("₹", ""), 10),
+      currency: "INR",
+      items: [{ id: variantId, name: product.name, quantity: 1 }],
+    });
 
     window.dispatchEvent(new Event("cartUpdated"));
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { addToCart } from "@/lib/shopify";
+import { track } from "@/lib/analytics";
 
 const EARTH_CRUNCH_VARIANT_GID = "gid://shopify/ProductVariant/51358572642610";
 
@@ -64,11 +65,24 @@ export default function ProductPage() {
   const desc  = useReveal(150);
   const [activeImage, setActiveImage] = useState(0);
 
+  useEffect(() => {
+    track("view_item", {
+      value: BASE_PRICE,
+      currency: "INR",
+      items: [{ id: EARTH_CRUNCH_VARIANT_GID, name: "Earth Crunch", price: BASE_PRICE, quantity: 1 }],
+    });
+  }, []);
+
   const handleAddToCart = async () => {
     if (adding) return;
     setAdding(true);
     try {
       await addToCart(EARTH_CRUNCH_VARIANT_GID, qty);
+      track("add_to_cart", {
+        value: totalPrice,
+        currency: "INR",
+        items: [{ id: EARTH_CRUNCH_VARIANT_GID, name: "Earth Crunch", price: BASE_PRICE, quantity: qty }],
+      });
       window.dispatchEvent(new Event("cartUpdated"));
       toast.custom((t) => (
         <div
@@ -546,9 +560,9 @@ export default function ProductPage() {
                     ["Energy (kcal)", "616.00", "7.70%"],
                     ["Protein (g)", "26.00", "-"],
                     ["Carbohydrates (g)", "27.00", "-"],
-                    ["Total Sugars (g)", "9.00", "3.00%"],
-                    ["Added Sugars (g)", "6.00", "16.40%"],
-                    ["Total Fat (g)", "44.00", "-"],
+                    ["Total Sugars (g)", "9.00", "-"],
+                    ["Added Sugars (g)", "6.00", "3.00%"],
+                    ["Total Fat (g)", "44.00", "16.40%"],
                     ["Trans Fat (g)", "0.00", "0.00%"],
                     ["Sodium (mg)", "160.00", "2.00%"],
                     ["Vitamin A (ug)", "600.00", "-"],
