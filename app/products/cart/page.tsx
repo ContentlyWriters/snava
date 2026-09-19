@@ -393,7 +393,20 @@ export default function CartPage() {
   Proceed To Checkout →
 </button>
 
-                <div className="mt-6 space-y-3 text-sm text-[#F3ECE2]/60">
+                <div
+                  className="mt-6 rounded-2xl px-4 py-3 flex items-center gap-2"
+                  style={{
+                    background: "rgba(254,214,140,0.12)",
+                    border: "1px solid rgba(254,214,140,0.3)",
+                  }}
+                >
+                  <span className="text-lg">💵</span>
+                  <p className="text-sm font-semibold text-[#FED68C]">
+                    Cash on Delivery Available
+                  </p>
+                </div>
+
+                <div className="mt-4 space-y-3 text-sm text-[#F3ECE2]/60">
                   <p>✓ Secure Checkout via Shopify</p>
                   <p>✓ Premium Ingredients</p>
                   <p>✓ Fast Delivery Across India</p>

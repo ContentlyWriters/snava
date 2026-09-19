@@ -417,6 +417,13 @@ export default function ProductPage() {
               {adding ? "Adding…" : "Add to Cart"}
               {!adding && <span className="text-base leading-none">→</span>}
             </button>
+
+            <p
+              className="mt-4 flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-wider"
+              style={{ color: "#FED68C" }}
+            >
+              <span>💵</span> Cash on Delivery Available
+            </p>
           </div>
 
           {/* RIGHT — product image */}
