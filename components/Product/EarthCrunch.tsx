@@ -424,6 +424,13 @@ export default function ProductPage() {
             >
               <span>💵</span> Cash on Delivery Available
             </p>
+
+            <p
+              className="mt-2 flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-wider"
+              style={{ color: "#8FD4F1" }}
+            >
+              <span>🎉</span> New Customer? Use SNAVA10 for 10% Off
+            </p>
           </div>
 
           {/* RIGHT — product image */}

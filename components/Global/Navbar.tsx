@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import { getOrNullCart } from "@/lib/shopify";
 
@@ -17,6 +18,9 @@ const productItems = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -55,8 +59,24 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Announcement Bar — new customer coupon (home page only) */}
+      {isHome && (
+        <div
+          className="fixed top-0 left-0 right-0 z-[60] h-9 flex items-center justify-center px-4 text-center"
+          style={{ background: "#3d1c08" }}
+        >
+          <p
+            className="text-[10.5px] md:text-xs font-semibold tracking-wide"
+            style={{ color: "#FED68C" }}
+          >
+            New here? Get <span className="underline decoration-dotted underline-offset-2">10% OFF</span> your first order — code{" "}
+            <span className="font-bold">SNAVA10</span>
+          </p>
+        </div>
+      )}
+
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-300 ${
+        className={`fixed ${isHome ? "top-9" : "top-0"} left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-300 ${
           scrolled
             ? "bg-[#F3ECE2]/90 backdrop-blur-md border-b border-[#6F371E]/10"
             : "bg-transparent"

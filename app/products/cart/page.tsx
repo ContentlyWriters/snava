@@ -406,6 +406,19 @@ export default function CartPage() {
                   </p>
                 </div>
 
+                <div
+                  className="mt-3 rounded-2xl px-4 py-3 flex items-center gap-2"
+                  style={{
+                    background: "rgba(143,212,241,0.12)",
+                    border: "1px solid rgba(143,212,241,0.3)",
+                  }}
+                >
+                  <span className="text-lg">🎉</span>
+                  <p className="text-sm font-semibold text-[#8FD4F1]">
+                    New Customer? Use SNAVA10 for 10% Off
+                  </p>
+                </div>
+
                 <div className="mt-4 space-y-3 text-sm text-[#F3ECE2]/60">
                   <p>✓ Secure Checkout via Shopify</p>
                   <p>✓ Premium Ingredients</p>
