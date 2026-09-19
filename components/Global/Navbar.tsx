@@ -85,7 +85,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="relative w-[140px] h-[40px] block">
           <Image
-            src="/snava-logo.svg"
+            src="/snava-logo.png"
             alt="Snava"
             fill
             priority

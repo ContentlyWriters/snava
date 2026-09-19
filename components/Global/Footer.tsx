@@ -16,7 +16,7 @@ export default function Footer() {
               className="relative w-[150px] h-[44px] block"
             >
               <Image
-                src="/snava-logo-white.svg"
+                src="/snava-logo-white.png"
                 alt="Snava"
                 fill
                 priority
