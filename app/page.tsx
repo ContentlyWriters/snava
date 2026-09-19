@@ -14,9 +14,9 @@ export default function Home() {
       <Hero />
       <Marquee />
       <Products />
+      <ReviewSection />
       <FlavorNotes />
       <Story />
-         <ReviewSection />
       <Footer />
     </>
   );

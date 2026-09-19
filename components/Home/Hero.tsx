@@ -43,6 +43,7 @@ export default function Hero() {
               width={500}
               height={500}
               priority
+              sizes="(min-width: 1024px) 500px, 240px"
               className={`absolute object-contain transition-all duration-1000 ease-out w-[240px] lg:w-[500px] h-[240px] lg:h-[500px] ${
                 activeJar === 0
                   ? "opacity-100 scale-100 rotate-0"
@@ -58,6 +59,7 @@ export default function Hero() {
               width={500}
               height={500}
               priority
+              sizes="(min-width: 1024px) 500px, 240px"
               className={`absolute object-contain transition-all duration-1000 ease-out w-[240px] lg:w-[500px] h-[240px] lg:h-[500px] ${
                 activeJar === 1
                   ? "opacity-100 scale-100 rotate-0"
