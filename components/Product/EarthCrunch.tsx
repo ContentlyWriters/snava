@@ -51,7 +51,7 @@ const ingredients = [
   "no palm oil ",
 ];
 
-const BASE_PRICE = 249;
+const BASE_PRICE = 269;
 const MRP = 399;
 const DISCOUNT_PCT = Math.round(((MRP - BASE_PRICE) / MRP) * 100);
 

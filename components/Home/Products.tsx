@@ -36,7 +36,7 @@ const products = [
       slug: "earth-crunch",
     tag: "Earth Crunch",
     name: "Earth Crunch",
-    price: "₹249",
+    price: "₹269",
     oldPrice: "₹399",
     image: "/EARTH-CRUNCH.png",
     bg: "bg-[#A2452B]",
