@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { addToCart as addToShopifyCart } from "@/lib/shopify";
 import { track } from "@/lib/analytics";
 import { useRouter } from "next/navigation";
+import { SALE, effectivePrice, formatINR, isSaleActive } from "@/lib/sale";
 
 const VARIANT_IDS: Record<string, string> = {
   cacao: "gid://shopify/ProductVariant/51358603510066",
@@ -76,10 +77,11 @@ const addToCart = async (product: any) => {
 
     await addToShopifyCart(variantId, 1);
 
+    const unit = effectivePrice(parseInt(product.price.replace("₹", ""), 10));
     track("add_to_cart", {
-      value: parseInt(product.price.replace("₹", ""), 10),
+      value: unit,
       currency: "INR",
-      items: [{ id: variantId, name: product.name, quantity: 1 }],
+      items: [{ id: variantId, name: product.name, price: unit, quantity: 1 }],
     });
 
     window.dispatchEvent(new Event("cartUpdated"));
@@ -120,6 +122,7 @@ const addToCart = async (product: any) => {
 };
 export default function Products() {
   const header = useReveal();
+  const onSale = isSaleActive();
 const router = useRouter();
   return (
     <section id="products" className="py-16 px-5 md:px-12 max-w-7xl mx-auto">
@@ -203,24 +206,35 @@ const router = useRouter();
 
           <div className="flex items-end justify-between relative z-10 mt-auto">
   <div>
-    {/* MRP + Discount Badge row */}
-    <div className="flex items-center gap-2 mb-1">
+    {/* MRP + Discount Badge row (during a sale the regular price is struck too) */}
+    <div className="flex flex-wrap items-center gap-2 mb-1">
       <span className="text-[0.65rem] font-semibold uppercase tracking-widest text-white/40">
         MRP
       </span>
       <span className="text-white/40 line-through text-sm">
         {p.oldPrice}
       </span>
-      <span className="bg-white/15 border border-white/20 text-green-400 text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5">
-        {getDiscount(p.price, p.oldPrice)}% OFF
-      </span>
+      {onSale && (
+        <span className="text-white/40 line-through text-sm">
+          {p.price}
+        </span>
+      )}
+      {onSale ? (
+        <span className="bg-[#FED68C] text-[#3d1c08] text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5">
+          🪔 Extra {SALE.percent}% off
+        </span>
+      ) : (
+        <span className="bg-white/15 border border-white/20 text-green-400 text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5">
+          {getDiscount(p.price, p.oldPrice)}% OFF
+        </span>
+      )}
     </div>
 
     {/* Final Price */}
     <div
       className={`font-[family-name:var(--font-playfair)] text-4xl font-bold ${p.priceColor}`}
     >
-      {p.price}
+      {onSale ? formatINR(effectivePrice(parseInt(p.price.replace("₹", ""), 10))) : p.price}
     </div>
   </div>
 

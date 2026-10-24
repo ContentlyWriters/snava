@@ -11,14 +11,23 @@ import {
   type ShopifyCartLine,
 } from "@/lib/shopify";
 import { appendUTMsToCheckoutUrl, track } from "@/lib/analytics";
+import { SALE, isSaleActive } from "@/lib/sale";
+import { FREE_SHIPPING_THRESHOLD, SHIPPING_CHARGE } from "@/lib/products";
 
 interface DisplayLine {
   lineId: string;
   variantId: string;
+  handle: string;
   name: string;
   variantTitle: string;
+  /** Regular unit price (before any discount). */
   price: number;
   quantity: number;
+  /** Line total before discounts. */
+  lineSubtotal: number;
+  /** Line total after discounts — what the customer pays. */
+  lineTotal: number;
+  discountLabel: string | null;
   image: string;
   altText: string;
 }
@@ -28,21 +37,29 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
     const { merchandise } = node;
     const perUnit = parseFloat(merchandise.price.amount);
     const img = merchandise.product.images.edges[0]?.node;
+    const lineSubtotal = parseFloat(node.cost.subtotalAmount?.amount ?? String(perUnit * node.quantity));
+    const lineTotal = parseFloat(node.cost.totalAmount.amount);
+    const firstDiscount = node.discountAllocations?.[0];
     return {
       lineId: node.id,
       variantId: merchandise.id,
+      handle: merchandise.product.handle,
       name: merchandise.product.title,
       variantTitle: merchandise.title === "Default Title" ? "" : merchandise.title,
       price: perUnit,
       quantity: node.quantity,
+      lineSubtotal,
+      lineTotal,
+      discountLabel: firstDiscount ? firstDiscount.title ?? firstDiscount.code ?? "Discount" : null,
       image: img?.url ?? "",
       altText: img?.altText ?? merchandise.product.title,
     };
   });
 }
 
-const SHIPPING_CHARGE = 79;
-const FREE_SHIPPING_MIN_ITEMS = 2;
+// Shipping mirrors Shopify's real rule (Settings → Shipping): free when the
+// order is ₹448 or more after discounts, otherwise ₹79. Counting items used to
+// break for the gift box (1 item, but 2 jars) — see lib/products.ts.
 
 export default function CartPage() {
   const [cart, setCart] = useState<ShopifyCart | null>(null);
@@ -116,7 +133,7 @@ export default function CartPage() {
         items: lines.map((l) => ({
           id: l.variantId,
           name: l.name,
-          price: l.price,
+          price: Math.round((l.lineTotal / l.quantity) * 100) / 100,
           quantity: l.quantity,
         })),
       });
@@ -128,13 +145,17 @@ export default function CartPage() {
     }
   };
 
-  const subtotal = cart ? parseFloat(cart.cost.subtotalAmount.amount) : 0;
   const totalItems = cart?.totalQuantity ?? 0;
+  const itemsSubtotal = lines.reduce((sum, l) => sum + l.lineSubtotal, 0);
+  const afterDiscounts = lines.reduce((sum, l) => sum + l.lineTotal, 0);
+  const discountTotal = Math.round((itemsSubtotal - afterDiscounts) * 100) / 100;
+  const discountLabel = lines.find((l) => l.discountLabel)?.discountLabel ?? "Discount";
 
-  // Shipping logic: free if 2+ items, else ₹49
-  const isFreeShipping = totalItems >= FREE_SHIPPING_MIN_ITEMS;
+  // Same rule Shopify applies at checkout: ₹448+ after discounts ships free.
+  const isFreeShipping = afterDiscounts >= FREE_SHIPPING_THRESHOLD;
   const shippingCharge = isFreeShipping ? 0 : SHIPPING_CHARGE;
-  const grandTotal = subtotal + shippingCharge;
+  const grandTotal = Math.round((afterDiscounts + shippingCharge) * 100) / 100;
+  const onSale = isSaleActive();
 
   if (!mounted) return null;
 
@@ -211,7 +232,8 @@ export default function CartPage() {
                 >
                   <span className="text-xl">🚚</span>
                   <p className="text-sm font-medium" style={{ color: "#3d1c08" }}>
-                    Add 1 more item to get{" "}
+                    Add 1 more jar (or get the{" "}
+                    <a href="/products/snava-gift-box" className="underline underline-offset-2">gift box</a>) for{" "}
                     <span className="font-bold text-[#A2452B]">FREE shipping!</span>
                     {" "}(Save ₹{SHIPPING_CHARGE})
                   </p>
@@ -271,15 +293,27 @@ export default function CartPage() {
                                 {item.variantTitle}
                               </p>
                             )}
-                            <p className="text-[#6F371E]/70 mt-1">500g</p>
+                            <p className="text-[#6F371E]/70 mt-1">
+                              {item.handle === "snava-gift-box" ? "2 × 500g" : "500g"}
+                            </p>
+                            {item.discountLabel && item.lineTotal < item.lineSubtotal && (
+                              <p className="mt-2 inline-block rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider bg-[#FED68C] text-[#3d1c08]">
+                                {item.discountLabel}
+                              </p>
+                            )}
                           </div>
 
                           <div className="text-right">
+                            {item.lineTotal < item.lineSubtotal && (
+                              <p className="text-sm text-[#6F371E]/50 line-through">
+                                {formatPrice(item.lineSubtotal)}
+                              </p>
+                            )}
                             <p className="text-2xl font-bold text-[#A2452B]">
-                              {formatPrice(item.price * item.quantity)}
+                              {formatPrice(item.lineTotal)}
                             </p>
                             <p className="text-sm text-[#6F371E]/60">
-                              {formatPrice(item.price)} each
+                              {formatPrice(item.lineTotal / item.quantity)} each
                             </p>
                           </div>
                         </div>
@@ -339,8 +373,14 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between text-[#F3ECE2]/80">
                     <span>Subtotal</span>
-                    <span>{formatPrice(subtotal)}</span>
+                    <span>{formatPrice(itemsSubtotal)}</span>
                   </div>
+                  {discountTotal > 0 && (
+                    <div className="flex justify-between text-[#FED68C]">
+                      <span>{discountLabel}</span>
+                      <span>−{formatPrice(discountTotal)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-[#F3ECE2]/80">
                     <span>Shipping</span>
                     {isFreeShipping ? (
@@ -352,7 +392,7 @@ export default function CartPage() {
                   {!isFreeShipping && (
                     <div className="text-right">
                       <p className="text-[0.68rem] text-[#F3ECE2]/40 leading-relaxed">
-                        Add 1 more item for free shipping
+                        Add 1 more jar for free shipping
                       </p>
                     </div>
                   )}
@@ -413,9 +453,11 @@ export default function CartPage() {
                     border: "1px solid rgba(143,212,241,0.3)",
                   }}
                 >
-                  <span className="text-lg">🎉</span>
+                  <span className="text-lg">{onSale ? "🪔" : "🎉"}</span>
                   <p className="text-sm font-semibold text-[#8FD4F1]">
-                    New Customer? Use SNAVA10 for 10% Off
+                    {onSale
+                      ? `${SALE.name}: ${SALE.percent}% off applied automatically`
+                      : "New Customer? Use SNAVA10 for 10% Off"}
                   </p>
                 </div>
 

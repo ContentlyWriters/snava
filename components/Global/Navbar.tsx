@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import { getOrNullCart } from "@/lib/shopify";
+import { SALE, isSaleActive } from "@/lib/sale";
 
 const productItems = [
   {
@@ -15,12 +16,18 @@ const productItems = [
     name: "Earth Crunch",
     href: "/products/earth-crunch",
   },
+  {
+    name: "Gift Box",
+    href: "/products/snava-gift-box",
+  },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
+  // See-through (showing the page's colour behind it) when the page opens,
+  // solid cream box as soon as you scroll down — same as the original code.
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -53,25 +60,44 @@ export default function Navbar() {
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    // Also check once right after load, so a page that opens already
+    // scrolled down (refresh / back button) shows the solid box right away.
+    const frame = requestAnimationFrame(handler);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handler);
+    };
   }, []);
 
   return (
     <>
-      {/* Announcement Bar — new customer coupon (home page only) */}
+      {/* Announcement Bar (home page only).
+          During the Diwali sale it promotes the sale instead of SNAVA10,
+          because SNAVA10 can't be combined with the sale discount.
+          It switches back to SNAVA10 by itself when the sale ends. */}
       {isHome && (
         <div
           className="fixed top-0 left-0 right-0 z-[60] h-9 flex items-center justify-center px-4 text-center"
           style={{ background: "#3d1c08" }}
         >
-          <p
-            className="text-[10.5px] md:text-xs font-semibold tracking-wide"
-            style={{ color: "#FED68C" }}
-          >
-            New here? Get <span className="underline decoration-dotted underline-offset-2">10% OFF</span> your first order — code{" "}
-            <span className="font-bold">SNAVA10</span>
-          </p>
+          {isSaleActive() ? (
+            <Link
+              href="/diwali"
+              className="text-[10.5px] md:text-xs font-semibold tracking-wide"
+              style={{ color: "#FED68C" }}
+            >
+              🪔 {SALE.name}: <span className="underline decoration-dotted underline-offset-2">Extra {SALE.percent}% OFF</span> everything, no code needed →
+            </Link>
+          ) : (
+            <p
+              className="text-[10.5px] md:text-xs font-semibold tracking-wide"
+              style={{ color: "#FED68C" }}
+            >
+              New here? Get <span className="underline decoration-dotted underline-offset-2">10% OFF</span> your first order — code{" "}
+              <span className="font-bold">SNAVA10</span>
+            </p>
+          )}
         </div>
       )}
 
@@ -145,6 +171,19 @@ export default function Navbar() {
               }`}
             >
               Lab Report
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              href="/diwali"
+              className={`text-xs font-semibold uppercase tracking-widest transition-colors duration-300 ${
+                scrolled
+                  ? "text-[#6F371E] hover:text-[#A2452B]"
+                  : "text-[#F3ECE2]/80 hover:text-[#FED68C]"
+              }`}
+            >
+              Diwali Gift
             </Link>
           </li>
         </ul>
@@ -437,6 +476,28 @@ export default function Navbar() {
               >
                 <span className="font-medium text-[#6F371E]">
                   Lab Report
+                </span>
+
+                <span>→</span>
+              </Link>
+
+              <Link
+                href="/diwali"
+                onClick={() => setMenuOpen(false)}
+                className="
+                  flex
+                  items-center
+                  justify-between
+                  rounded-2xl
+                  px-5
+                  py-4
+                "
+                style={{
+                  background: "rgba(111,55,30,0.05)",
+                }}
+              >
+                <span className="font-medium text-[#6F371E]">
+                  Diwali Gift
                 </span>
 
                 <span>→</span>

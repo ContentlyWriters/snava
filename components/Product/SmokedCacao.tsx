@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { addToCart } from "@/lib/shopify";
 import { track } from "@/lib/analytics";
+import { SALE, effectivePrice, formatINR, isSaleActive } from "@/lib/sale";
 
 const SMOKED_CACAO_VARIANT_GID = "gid://shopify/ProductVariant/51358603510066";
 
@@ -58,7 +59,12 @@ const DISCOUNT_PCT = Math.round(((MRP - BASE_PRICE) / MRP) * 100);
 export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
-  const totalPrice = BASE_PRICE * qty;
+  // During a sale (lib/sale.ts) the price shown matches what Shopify's
+  // automatic discount will charge at checkout.
+  const onSale = isSaleActive();
+  const unitPrice = effectivePrice(BASE_PRICE);
+  const totalPrice = Math.round(unitPrice * qty * 100) / 100;
+  const totalRegular = BASE_PRICE * qty;
   const totalMrp   = MRP * qty;
   const hero  = useReveal(0);
   const strip = useReveal(100);
@@ -67,9 +73,9 @@ export default function ProductPage() {
 
   useEffect(() => {
     track("view_item", {
-      value: BASE_PRICE,
+      value: effectivePrice(BASE_PRICE),
       currency: "INR",
-      items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: BASE_PRICE, quantity: 1 }],
+      items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: effectivePrice(BASE_PRICE), quantity: 1 }],
     });
   }, []);
 
@@ -81,7 +87,7 @@ export default function ProductPage() {
       track("add_to_cart", {
         value: totalPrice,
         currency: "INR",
-        items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: BASE_PRICE, quantity: qty }],
+        items: [{ id: SMOKED_CACAO_VARIANT_GID, name: "Smoked Cacao", price: unitPrice, quantity: qty }],
       });
       window.dispatchEvent(new Event("cartUpdated"));
       toast.custom((t) => (
@@ -242,15 +248,20 @@ export default function ProductPage() {
                   className="text-[0.58rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5"
                   style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", color: "#4ade80" }}
                 >
-                  {DISCOUNT_PCT}% OFF
+                  {onSale ? `🪔 Extra ${SALE.percent}% off` : `${DISCOUNT_PCT}% OFF`}
                 </span>
               </div>
               <div className="flex items-baseline gap-3">
+                {onSale && (
+                  <span className="line-through text-lg" style={{ color: "rgba(243,236,226,0.4)" }}>
+                    ₹{totalRegular}
+                  </span>
+                )}
                 <span
                   className="font-[family-name:var(--font-playfair)] font-bold leading-none"
                   style={{ color: "#FED68C", fontSize: "2.6rem" }}
                 >
-                  ₹{totalPrice}
+                  {formatINR(totalPrice)}
                 </span>
                 <span className="text-[0.75rem] font-light" style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}>
                   / 500g
@@ -286,6 +297,23 @@ export default function ProductPage() {
                 {!adding && <span className="text-base leading-none">→</span>}
               </button>
             </div>
+
+            <p
+              className="mt-4 flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-wider"
+              style={{ color: "#FED68C" }}
+            >
+              <span>💵</span> Cash on Delivery Available
+            </p>
+            <p
+              className="mt-2 flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-wider"
+              style={{ color: "#8FD4F1" }}
+            >
+              {onSale ? (
+                <><span>🪔</span> {SALE.name}: extra {SALE.percent}% off, no code needed</>
+              ) : (
+                <><span>🎉</span> New Customer? Use SNAVA10 for 10% Off</>
+              )}
+            </p>
           </div>
         </div>
 
@@ -350,12 +378,17 @@ export default function ProductPage() {
                 <span className="text-[0.65rem] font-semibold uppercase tracking-widest" style={{ color: "rgba(243,236,226,0.35)" }}>MRP</span>
                 <span className="line-through text-sm" style={{ color: "rgba(243,236,226,0.35)" }}>₹{totalMrp}</span>
                 <span className="text-[0.6rem] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5" style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", color: "#4ade80" }}>
-                  {DISCOUNT_PCT}% OFF
+                  {onSale ? `🪔 Extra ${SALE.percent}% off` : `${DISCOUNT_PCT}% OFF`}
                 </span>
               </div>
               <div className="flex items-baseline gap-3">
+                {onSale && (
+                  <span className="line-through text-lg" style={{ color: "rgba(243,236,226,0.4)" }}>
+                    ₹{totalRegular}
+                  </span>
+                )}
                 <span className="font-[family-name:var(--font-playfair)] font-bold leading-none" style={{ color: "#FED68C", fontSize: "clamp(2rem, 3.5vw, 2.6rem)" }}>
-                  ₹{totalPrice}
+                  {formatINR(totalPrice)}
                 </span>
                 <span className="text-[0.78rem] font-light" style={{ color: "rgba(243,236,226,0.35)", letterSpacing: "0.06em" }}>/ 500g</span>
               </div>
@@ -393,7 +426,11 @@ export default function ProductPage() {
               className="mt-2 flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-wider"
               style={{ color: "#8FD4F1" }}
             >
-              <span>🎉</span> New Customer? Use SNAVA10 for 10% Off
+              {onSale ? (
+                <><span>🪔</span> {SALE.name}: extra {SALE.percent}% off, no code needed</>
+              ) : (
+                <><span>🎉</span> New Customer? Use SNAVA10 for 10% Off</>
+              )}
             </p>
           </div>
 

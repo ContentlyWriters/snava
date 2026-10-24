@@ -64,8 +64,16 @@ export interface ShopifyCartLine {
   id: string;
   quantity: number;
   cost: {
+    /** Before line-level discounts (e.g. the Diwali automatic discount). */
+    subtotalAmount: { amount: string; currencyCode: string };
+    /** After line-level discounts — what the customer actually pays for this line. */
     totalAmount: { amount: string; currencyCode: string };
   };
+  discountAllocations: {
+    discountedAmount: { amount: string; currencyCode: string };
+    title?: string;
+    code?: string;
+  }[];
   merchandise: {
     id: string;
     title: string;
@@ -97,7 +105,13 @@ const CART_FRAGMENT = `
           id
           quantity
           cost {
+            subtotalAmount { amount currencyCode }
             totalAmount { amount currencyCode }
+          }
+          discountAllocations {
+            discountedAmount { amount currencyCode }
+            ... on CartAutomaticDiscountAllocation { title }
+            ... on CartCodeDiscountAllocation { code }
           }
           merchandise {
             ... on ProductVariant {
@@ -296,8 +310,17 @@ export async function addToCart(
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Format a Shopify price amount (string) to INR display string */
+/**
+ * Format a Shopify price amount to an INR display string.
+ * Whole rupees show as ₹269; amounts with paise (e.g. after the 15% Diwali
+ * discount) show as ₹228.65 so the cart matches checkout exactly.
+ */
 export function formatPrice(amount: string | number): string {
   const num = typeof amount === "string" ? parseFloat(amount) : amount;
-  return `₹${Math.round(num).toLocaleString("en-IN")}`;
+  const rounded = Math.round(num * 100) / 100;
+  const hasPaise = !Number.isInteger(rounded);
+  return `₹${rounded.toLocaleString("en-IN", {
+    minimumFractionDigits: hasPaise ? 2 : 0,
+    maximumFractionDigits: 2,
+  })}`;
 }
