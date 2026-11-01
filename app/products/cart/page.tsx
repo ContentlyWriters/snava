@@ -12,7 +12,7 @@ import {
 } from "@/lib/shopify";
 import { appendUTMsToCheckoutUrl, track } from "@/lib/analytics";
 import { SALE, isSaleActive } from "@/lib/sale";
-import { FREE_SHIPPING_THRESHOLD, SHIPPING_CHARGE } from "@/lib/products";
+import { BOX_HANDLES, FREE_SHIPPING_THRESHOLD, SHIPPING_CHARGE } from "@/lib/products";
 
 interface DisplayLine {
   lineId: string;
@@ -58,7 +58,7 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
 }
 
 // Shipping mirrors Shopify's real rule (Settings → Shipping): free when the
-// order is ₹448 or more after discounts, otherwise ₹79. Counting items used to
+// order is ₹440 or more after discounts, otherwise ₹79. Counting items used to
 // break for the gift box (1 item, but 2 jars) — see lib/products.ts.
 
 export default function CartPage() {
@@ -151,7 +151,7 @@ export default function CartPage() {
   const discountTotal = Math.round((itemsSubtotal - afterDiscounts) * 100) / 100;
   const discountLabel = lines.find((l) => l.discountLabel)?.discountLabel ?? "Discount";
 
-  // Same rule Shopify applies at checkout: ₹448+ after discounts ships free.
+  // Same rule Shopify applies at checkout: ₹440+ after discounts ships free.
   const isFreeShipping = afterDiscounts >= FREE_SHIPPING_THRESHOLD;
   const shippingCharge = isFreeShipping ? 0 : SHIPPING_CHARGE;
   const grandTotal = Math.round((afterDiscounts + shippingCharge) * 100) / 100;
@@ -233,7 +233,7 @@ export default function CartPage() {
                   <span className="text-xl">🚚</span>
                   <p className="text-sm font-medium" style={{ color: "#3d1c08" }}>
                     Add 1 more jar (or get the{" "}
-                    <a href="/products/snava-gift-box" className="underline underline-offset-2">gift box</a>) for{" "}
+                    <a href="/products/snava-gift-box" className="underline underline-offset-2">Classic Duo</a>) for{" "}
                     <span className="font-bold text-[#A2452B]">FREE shipping!</span>
                     {" "}(Save ₹{SHIPPING_CHARGE})
                   </p>
@@ -294,7 +294,7 @@ export default function CartPage() {
                               </p>
                             )}
                             <p className="text-[#6F371E]/70 mt-1">
-                              {item.handle === "snava-gift-box" ? "2 × 500g" : "500g"}
+                              {BOX_HANDLES.includes(item.handle) ? "2 × 500g" : "500g"}
                             </p>
                             {item.discountLabel && item.lineTotal < item.lineSubtotal && (
                               <p className="mt-2 inline-block rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider bg-[#FED68C] text-[#3d1c08]">

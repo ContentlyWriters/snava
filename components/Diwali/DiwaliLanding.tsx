@@ -108,7 +108,7 @@ export default function DiwaliLanding() {
             >
               <span aria-hidden>🪔</span>
               <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em]" style={{ color: "#FED68C" }}>
-                {onSale ? `${SALE.name} · Extra ${SALE.percent}% off everything` : "The Snava Gift Box"}
+                {onSale ? `${SALE.name} · Extra ${SALE.percent}% off everything` : "The Classic Duo"}
               </span>
             </div>
 
@@ -119,7 +119,7 @@ export default function DiwaliLanding() {
               Gift something <em className="italic" style={{ color: "#FED68C" }}>real</em> this Diwali.
             </h1>
             <p className="text-base md:text-lg font-light leading-relaxed mb-8 max-w-xl" style={{ color: "rgba(243,236,226,0.72)" }}>
-              Both Snava flavours, Earth Crunch and Smoked Cacao, in one gift box.
+              Both Snava flavours, Earth Crunch and Smoked Cacao, in one gift box: The Classic Duo.
               {onSale && <> Extra {SALE.percent}% off, applied automatically at checkout.</>}
             </p>
 
@@ -150,7 +150,7 @@ export default function DiwaliLanding() {
                   boxShadow: "0 6px 30px rgba(254,214,140,0.35)",
                 }}
               >
-                {addingKey === GIFT_BOX.key ? "Adding…" : "Add Gift Box to Cart"}
+                {addingKey === GIFT_BOX.key ? "Adding…" : "Add Classic Duo to Cart"}
                 {addingKey !== GIFT_BOX.key && <span className="text-base leading-none">→</span>}
               </button>
               <a
@@ -167,7 +167,7 @@ export default function DiwaliLanding() {
 
           {/* Visual */}
           <div className="order-1 lg:order-2 flex justify-center">
-            <Link href={GIFT_BOX.href} aria-label="View the Snava Gift Box" className="block w-[min(88vw,540px)]">
+            <Link href={GIFT_BOX.href} aria-label="View The Classic Duo gift box" className="block w-[min(88vw,540px)]">
               <GiftBoxVisual className="aspect-square" eager />
             </Link>
           </div>
@@ -302,7 +302,7 @@ export default function DiwaliLanding() {
               padding: "16px 32px",
             }}
           >
-            {addingKey === GIFT_BOX.key ? "Adding…" : "Add Gift Box to Cart →"}
+            {addingKey === GIFT_BOX.key ? "Adding…" : "Add Classic Duo to Cart →"}
           </button>
         </div>
       </section>

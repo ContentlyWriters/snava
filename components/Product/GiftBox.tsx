@@ -4,28 +4,46 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { SALE, effectivePrice, isSaleActive } from "@/lib/sale";
-import { EARTH_CRUNCH, GIFT_BOX, SMOKED_CACAO } from "@/lib/products";
+import { EARTH_CRUNCH, GIFT_BOX, SMOKED_CACAO, type CatalogItem } from "@/lib/products";
 import PriceTag from "@/components/Shop/PriceTag";
 import GiftBoxVisual from "@/components/Shop/GiftBoxVisual";
 import TrustRow from "@/components/Shop/TrustRow";
 import { useAddToCart } from "@/components/Shop/useAddToCart";
 
-const INSIDE = [EARTH_CRUNCH, SMOKED_CACAO];
+const INSIDE: [CatalogItem, CatalogItem] = [EARTH_CRUNCH, SMOKED_CACAO];
 
-export default function GiftBox() {
+// Used for both 2-jar boxes. With no props it renders The Classic Duo
+// (gift box); app/products/chocoholic-box passes its own values.
+export default function GiftBox({
+  box = GIFT_BOX,
+  inside = INSIDE,
+  titleTop = "The Classic",
+  titleBottom = "Duo",
+  insideHeading = "One for crunch. One for chocolate.",
+  ctaLabel = "Add Classic Duo to Cart",
+  shipsAfterDiwali = false,
+}: {
+  box?: CatalogItem;
+  inside?: [CatalogItem, CatalogItem];
+  titleTop?: string;
+  titleBottom?: string;
+  insideHeading?: string;
+  ctaLabel?: string;
+  shipsAfterDiwali?: boolean;
+} = {}) {
   const [qty, setQty] = useState(1);
   const { add, addingKey } = useAddToCart();
-  const adding = addingKey === GIFT_BOX.key;
+  const adding = addingKey === box.key;
   const onSale = isSaleActive();
 
   useEffect(() => {
-    const unit = effectivePrice(GIFT_BOX.price);
+    const unit = effectivePrice(box.price);
     track("view_item", {
       value: unit,
       currency: "INR",
-      items: [{ id: GIFT_BOX.variantId, name: GIFT_BOX.name, price: unit, quantity: 1 }],
+      items: [{ id: box.variantId, name: box.name, price: unit, quantity: 1 }],
     });
-  }, []);
+  }, [box]);
 
   return (
     <main className="bg-[#F3ECE2] overflow-hidden">
@@ -37,7 +55,7 @@ export default function GiftBox() {
             className="relative order-1 md:order-2 flex items-center justify-center pt-24 pb-6 md:py-20 px-6"
             style={{ background: "#5a2e15" }}
           >
-            <GiftBoxVisual className="aspect-square max-w-[520px]" eager />
+            <GiftBoxVisual className="aspect-square max-w-[520px]" eager jars={inside} />
             <div
               className="absolute bottom-5 right-5 md:bottom-7 md:right-7 rounded-[14px] px-4 py-2.5"
               style={{
@@ -47,7 +65,7 @@ export default function GiftBox() {
               }}
             >
               <p className="text-[0.62rem] font-bold uppercase tracking-[0.14em]" style={{ color: "#8FD4F1" }}>
-                Gift Box · {GIFT_BOX.size}
+                {titleTop} {titleBottom} · {box.size}
               </p>
             </div>
           </div>
@@ -60,7 +78,7 @@ export default function GiftBox() {
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#8FD4F1" }} />
               <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em]" style={{ color: "#8FD4F1" }}>
-                Both flavours · {GIFT_BOX.size}
+                Both flavours · {box.size}
               </span>
             </div>
 
@@ -74,16 +92,16 @@ export default function GiftBox() {
               className="font-[family-name:var(--font-playfair)] font-bold text-[#F3ECE2] leading-[1.03] mb-2"
               style={{ fontSize: "clamp(2.8rem, 5.5vw, 4rem)", letterSpacing: "-0.01em" }}
             >
-              Gift<br />
-              <em className="italic" style={{ color: "#FED68C" }}>Box</em>
+              {titleTop}<br />
+              <em className="italic" style={{ color: "#FED68C" }}>{titleBottom}</em>
             </h1>
             <p className="text-[0.8rem] font-light mb-7" style={{ color: "rgba(143,212,241,0.6)", letterSpacing: "0.04em" }}>
-              {GIFT_BOX.tagline}
+              {box.tagline}
             </p>
 
             {/* What's inside */}
             <div className="grid grid-cols-2 gap-3 mb-8 max-w-md">
-              {INSIDE.map((p) => (
+              {inside.map((p) => (
                 <Link
                   key={p.key}
                   href={p.href}
@@ -99,7 +117,7 @@ export default function GiftBox() {
             </div>
 
             <div className="mb-7">
-              <PriceTag item={GIFT_BOX} qty={qty} tone="dark" />
+              <PriceTag item={box} qty={qty} tone="dark" />
             </div>
 
             <div className="flex items-center gap-4">
@@ -129,7 +147,7 @@ export default function GiftBox() {
               </div>
 
               <button
-                onClick={() => add(GIFT_BOX, qty)}
+                onClick={() => add(box, qty)}
                 disabled={adding}
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 rounded-full font-bold uppercase transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60"
                 style={{
@@ -141,10 +159,16 @@ export default function GiftBox() {
                   boxShadow: "0 4px 24px rgba(254,214,140,0.28)",
                 }}
               >
-                {adding ? "Adding…" : "Add Gift Box to Cart"}
+                {adding ? "Adding…" : ctaLabel}
                 {!adding && <span className="text-base leading-none">→</span>}
               </button>
             </div>
+
+            {shipsAfterDiwali && (
+              <p className="mt-5 text-[0.72rem] font-semibold uppercase tracking-wider" style={{ color: "#F3ECE2" }}>
+                📦 New launch: orders ship after Diwali
+              </p>
+            )}
 
             {onSale && (
               <p className="mt-5 text-[0.72rem] font-semibold uppercase tracking-wider" style={{ color: "#FED68C" }}>
@@ -168,11 +192,11 @@ export default function GiftBox() {
           className="font-[family-name:var(--font-playfair)] font-bold text-[#3d1c08] text-center leading-tight mb-12"
           style={{ fontSize: "clamp(2rem, 4.5vw, 3.2rem)" }}
         >
-          One for crunch. One for chocolate.
+          {insideHeading}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-5">
-          {INSIDE.map((p, i) => (
+          {inside.map((p, i) => (
             <div
               key={p.key}
               className="relative rounded-[28px] overflow-hidden p-7 md:p-10 flex flex-col"

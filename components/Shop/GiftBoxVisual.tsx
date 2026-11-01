@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { EARTH_CRUNCH, SMOKED_CACAO } from "@/lib/products";
+import { EARTH_CRUNCH, SMOKED_CACAO, type CatalogItem } from "@/lib/products";
 
 /**
  * Stand-in visual for the gift box: both jars side by side in a ribboned box.
@@ -9,8 +9,11 @@ import { EARTH_CRUNCH, SMOKED_CACAO } from "@/lib/products";
 export default function GiftBoxVisual({
   className = "",
   eager = false,
+  jars = [EARTH_CRUNCH, SMOKED_CACAO],
 }: {
   className?: string;
+  /** The two jars shown in the box (left, right). */
+  jars?: [CatalogItem, CatalogItem];
   /**
    * Pass true only when the box is above the fold (e.g. a page hero).
    * Next.js 16 deprecated <Image priority>; its docs recommend
@@ -42,8 +45,8 @@ export default function GiftBoxVisual({
       <div className="relative z-10 flex items-end justify-center gap-[2%] h-full pt-[2%] pb-[10%]">
         <div className="relative w-[44%] h-[88%] -rotate-[5deg]">
           <Image
-            src={EARTH_CRUNCH.image}
-            alt="Earth Crunch peanut butter jar"
+            src={jars[0].image}
+            alt={`${jars[0].name} peanut butter jar`}
             fill
             sizes="(min-width: 1024px) 260px, 45vw"
             className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.45)]"
@@ -53,8 +56,8 @@ export default function GiftBoxVisual({
         </div>
         <div className="relative w-[44%] h-[88%] rotate-[5deg]">
           <Image
-            src={SMOKED_CACAO.image}
-            alt="Smoked Cacao peanut butter jar"
+            src={jars[1].image}
+            alt={`${jars[1].name} peanut butter jar`}
             fill
             sizes="(min-width: 1024px) 260px, 45vw"
             className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.45)]"

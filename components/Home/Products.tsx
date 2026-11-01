@@ -11,6 +11,7 @@ import { SALE, effectivePrice, formatINR, isSaleActive } from "@/lib/sale";
 const VARIANT_IDS: Record<string, string> = {
   cacao: "gid://shopify/ProductVariant/51358603510066",
   earth: "gid://shopify/ProductVariant/51358572642610",
+  desert: "gid://shopify/ProductVariant/68114484592946",
 };
 
 const products = [
@@ -19,7 +20,7 @@ const products = [
      slug: "smoked-cacao",
     tag: "Smoked Cacao",
     name: "Smoked Cacao",
-    price: "₹299",
+    price: "₹289",
     oldPrice: "₹449",
     image: "/SMOKED-CACAO.png",
     bg: "bg-[#6F371E]",
@@ -49,6 +50,25 @@ const products = [
     badgeClass: "border-[#FED68C]/30 text-[#FED68C]",
     shadow: "shadow-[0_24px_64px_rgba(162,69,43,0.3)]",
     blobColor: "#FED68C",
+  },
+  {
+    id: "desert",
+    slug: "desert-cacao",
+    tag: "New · Ships after Diwali",
+    name: "Desert Cacao",
+    price: "₹299",
+    oldPrice: "₹469",
+    image: "/DESERT-CACAO.png",
+    bg: "bg-[#3d1c08]",
+    tagColor: "text-[#8FD4F1]",
+    nameColor: "text-[#F3ECE2]",
+    descColor: "text-[#F3ECE2]/60",
+    priceColor: "text-[#FED68C]",
+    btnClass: "bg-[#8FD4F1] text-[#3d1c08] hover:bg-[#F3ECE2]",
+    badgeClass: "border-[#8FD4F1]/30 text-[#8FD4F1]",
+    shadow: "shadow-[0_24px_64px_rgba(61,28,8,0.32)]",
+    blobColor: "#8FD4F1",
+    isNew: true,
   },
 ];
 
@@ -134,12 +154,12 @@ const router = useRouter();
         <span className="text-[#A2452B] text-[0.68rem] font-semibold uppercase tracking-[0.22em] block mb-3">The Lineup</span>
         <h2 className="font-[family-name:var(--font-playfair)] font-bold text-[#3d1c08] leading-tight tracking-tight"
           style={{ fontSize: "clamp(2.2rem,5vw,3.8rem)" }}>
-          Two Flavors.<br />Infinite Possibilities.
+          Three Flavors.<br />Infinite Possibilities.
         </h2>
       </div>
 
       {/* cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         {products.map((p, i) => {
           const card = useReveal(); // eslint-disable-line react-hooks/rules-of-hooks
           return (
@@ -154,7 +174,7 @@ const router = useRouter();
               <div className="absolute inset-0 overflow-hidden rounded-[28px] pointer-events-none">
                 <svg
                   viewBox="0 0 200 200"
-                  className={`absolute w-[130%] h-[130%] -top-[15%] -left-[15%] opacity-15 ${i === 0 ? "animate-blob" : "animate-blob-rev"}`}
+                  className={`absolute w-[130%] h-[130%] -top-[15%] -left-[15%] opacity-15 ${i % 2 === 0 ? "animate-blob" : "animate-blob-rev"}`}
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path fill={p.blobColor} d="M42.7,-62.5C54.1,-53.4,61.4,-38.8,66.5,-23.3C71.6,-7.7,74.4,8.8,69.5,22.7C64.6,36.5,52,47.6,38.3,57.4C24.6,67.2,9.8,75.6,-6.1,78.1C-22,80.5,-39,77,-50.9,67.1C-62.8,57.2,-69.6,40.9,-72.9,24.4C-76.1,7.8,-75.7,-9,-69.4,-23.5C-63.1,-38,-51,-50.2,-37.6,-58.7C-24.2,-67.2,-9.6,-72,4.7,-77.8C19,-83.7,31.4,-71.5,42.7,-62.5Z" transform="translate(100 100)" />
@@ -195,7 +215,7 @@ const router = useRouter();
   />
 </div>
 
-              <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.18em] mb-1 relative z-10 ${p.tagColor}`}></p>
+              <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.18em] mb-1 relative z-10 ${p.tagColor}`}>{"isNew" in p && p.isNew ? p.tag : ""}</p>
               <h3
                 className={`font-[family-name:var(--font-playfair)] font-black leading-none tracking-tight mb-4 relative z-10 whitespace-pre-line ${p.nameColor}`}
                 style={{ fontSize: "clamp(1.9rem,3.5vw,2.8rem)" }}

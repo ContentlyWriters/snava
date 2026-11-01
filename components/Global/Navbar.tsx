@@ -17,8 +17,16 @@ const productItems = [
     href: "/products/earth-crunch",
   },
   {
-    name: "Gift Box",
+    name: "Desert Cacao (New)",
+    href: "/products/desert-cacao",
+  },
+  {
+    name: "The Classic Duo",
     href: "/products/snava-gift-box",
+  },
+  {
+    name: "The Chocoholic Box",
+    href: "/products/chocoholic-box",
   },
 ];
 

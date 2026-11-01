@@ -52,7 +52,7 @@ const ingredients = [
   "Trans Fat Free",
 ];
 
-const BASE_PRICE = 299;
+const BASE_PRICE = 289;
 const MRP = 449;
 const DISCOUNT_PCT = Math.round(((MRP - BASE_PRICE) / MRP) * 100);
 

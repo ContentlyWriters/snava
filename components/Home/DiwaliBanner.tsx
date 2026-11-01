@@ -29,7 +29,7 @@ export default function DiwaliBanner() {
             Extra {SALE.percent}% off everything.
           </h2>
           <p className="text-sm md:text-base mb-6 max-w-md" style={{ color: "rgba(243,236,226,0.72)" }}>
-            New: the Snava Gift Box, both flavours together, now {formatINR(salePrice(GIFT_BOX.price))}{" "}
+            New: The Classic Duo gift box, both flavours together, now {formatINR(salePrice(GIFT_BOX.price))}{" "}
             <span className="line-through opacity-60">{formatINR(GIFT_BOX.price)}</span>. No code needed.
           </p>
           <div className="mb-7">
