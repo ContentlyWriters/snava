@@ -128,7 +128,7 @@ export default function DesertCacao() {
   const productImages = [
     "/DESERT-CACAO.png",
     "/desert-cacao-front-back.png",
-    "/desert-cacao-plant.jpg",
+    "/label-desert-cacao.png",
   ];
 
   return (
