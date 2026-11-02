@@ -23,6 +23,15 @@ const reports = [
     date: "24 JUNE 2026",
     pdf: "/lab-reports/ec001.pdf",
   },
+
+  {
+    id: 3,
+    product: "Desert Cacao",
+    batch: "VCC-26/07/01",
+    date: "31 AUG 2026",
+    pdf: "/lab-reports/dc-pilot-vcc260701.pdf",
+    note: "Pilot batch report. Report for the current batch (DC2629701) coming soon.",
+  },
  
 ];
 
@@ -114,6 +123,12 @@ export default function LabReportsPage() {
                       </span>
                     </div>
                   </div>
+
+                  {report.note && (
+                    <p className="mt-4 text-xs leading-relaxed text-[#3d1c08]/60">
+                      {report.note}
+                    </p>
+                  )}
 
                  
 
