@@ -36,7 +36,7 @@ const macros = [
   { val: "62%",  lbl: "Peanuts"     },
   { val: "Real", lbl: "Millet"      },
   { val: "0g",   lbl: "Trans Fat"   },
-  { val: "No",   lbl: "Palm Oil"    },
+  { val: "No",   lbl: "Preservatives" },
 ];
 
 const nutritionStrip = [
@@ -44,7 +44,7 @@ const nutritionStrip = [
   { val: "Ragi",  lbl: "+ Sorghum Millet Crisps" },
   { val: "Milk",  lbl: "Chocolate Paste"         },
   { val: "Zero",  lbl: "Trans Fat"               },
-  { val: "No",    lbl: "Palm Oil"                },
+  { val: "No",    lbl: "Preservatives"           },
 ];
 
 const ingredients = [
@@ -53,7 +53,6 @@ const ingredients = [
   "Vegetable Protein",
   "Guilt-Free",
   "Trans Fat Free",
-  "No Palm Oil",
 ];
 
 const labelIngredients =
@@ -546,7 +545,7 @@ export default function DesertCacao() {
               Then we add milk chocolate paste. Not a flavouring. Actual chocolate, blended smooth.
             </p>
             <p className="text-[#5a3520] font-light leading-[1.85] text-sm md:text-[0.92rem]">
-              And then the part you hear: crisps of finger millet (ragi) and sorghum, folded through every jar. Smooth chocolate peanut butter with a crunch. Zero trans fat, no palm oil.
+              And then the part you hear: crisps of finger millet (ragi) and sorghum, folded through every jar. Smooth chocolate peanut butter with a crunch. Zero trans fat, no preservatives.
             </p>
           </div>
 

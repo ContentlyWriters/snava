@@ -55,7 +55,7 @@ export const DESERT_CACAO: CatalogItem = {
   size: "500g",
   image: "/DESERT-CACAO.png",
   tagline: "Chocolate peanut butter with a millet crunch.",
-  facts: ["Millet crisps in every spoon", "Milk chocolate + roasted peanuts", "No palm oil"],
+  facts: ["Millet crisps in every spoon", "Milk chocolate + roasted peanuts", "Zero trans fat"],
 };
 
 // Shown on Desert Cacao and The Chocoholic Box while the first batch is
