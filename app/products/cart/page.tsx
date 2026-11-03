@@ -38,8 +38,17 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
     const perUnit = parseFloat(merchandise.price.amount);
     const img = merchandise.product.images.edges[0]?.node;
     const lineSubtotal = parseFloat(node.cost.subtotalAmount?.amount ?? String(perUnit * node.quantity));
-    const lineTotal = parseFloat(node.cost.totalAmount.amount);
+    let lineTotal = parseFloat(node.cost.totalAmount.amount);
     const firstDiscount = node.discountAllocations?.[0];
+    let discountLabel: string | null = firstDiscount ? firstDiscount.title ?? firstDiscount.code ?? "Discount" : null;
+    // Shopify's cart API doesn't always apply the automatic sale discount
+    // before checkout (checkout always does). So during the sale, if the
+    // line comes back undiscounted, show the sale price here too — the same
+    // price shown on the product pages and charged at checkout.
+    if (isSaleActive() && lineTotal >= lineSubtotal - 0.005) {
+      lineTotal = Math.round(lineSubtotal * (100 - SALE.percent)) / 100;
+      discountLabel = `${SALE.name}: extra ${SALE.percent}% off`;
+    }
     return {
       lineId: node.id,
       variantId: merchandise.id,
@@ -50,7 +59,7 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
       quantity: node.quantity,
       lineSubtotal,
       lineTotal,
-      discountLabel: firstDiscount ? firstDiscount.title ?? firstDiscount.code ?? "Discount" : null,
+      discountLabel,
       image: img?.url ?? "",
       altText: img?.altText ?? merchandise.product.title,
     };
