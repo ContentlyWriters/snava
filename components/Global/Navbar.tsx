@@ -182,18 +182,6 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li>
-            <Link
-              href="/diwali"
-              className={`text-xs font-semibold uppercase tracking-widest transition-colors duration-300 ${
-                scrolled
-                  ? "text-[#6F371E] hover:text-[#A2452B]"
-                  : "text-[#F3ECE2]/80 hover:text-[#FED68C]"
-              }`}
-            >
-              Diwali Gift
-            </Link>
-          </li>
         </ul>
 
         {/* Right Side */}
@@ -489,27 +477,6 @@ export default function Navbar() {
                 <span>→</span>
               </Link>
 
-              <Link
-                href="/diwali"
-                onClick={() => setMenuOpen(false)}
-                className="
-                  flex
-                  items-center
-                  justify-between
-                  rounded-2xl
-                  px-5
-                  py-4
-                "
-                style={{
-                  background: "rgba(111,55,30,0.05)",
-                }}
-              >
-                <span className="font-medium text-[#6F371E]">
-                  Diwali Gift
-                </span>
-
-                <span>→</span>
-              </Link>
 
             </div>
 

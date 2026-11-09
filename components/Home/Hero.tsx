@@ -9,7 +9,7 @@ export default function Hero() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveJar((prev) => (prev + 1) % 2);
+      setActiveJar((prev) => (prev + 1) % 3);
     }, 4000);
 
     return () => clearInterval(interval);
@@ -68,10 +68,26 @@ export default function Hero() {
               style={{ animation: "floatJar 5s ease-in-out infinite" }}
             />
 
+            {/* JAR 3 */}
+            <Image
+              src="/desert-cacao-front-back.png"
+              alt="Desert Cacao"
+              width={500}
+              height={500}
+              sizes="(min-width: 1024px) 500px, 240px"
+              className={`absolute object-contain transition-all duration-1000 ease-out w-[240px] lg:w-[500px] h-[240px] lg:h-[500px] ${
+                activeJar === 2
+                  ? "opacity-100 scale-100 rotate-0"
+                  : "opacity-0 scale-75 rotate-12"
+              }`}
+              style={{ animation: "floatJar 5s ease-in-out infinite" }}
+            />
+
             {/* Flavor dots — sirf mobile pe */}
             <div className="absolute bottom-0 flex gap-2 justify-center lg:hidden">
               <div className={`h-[5px] rounded-full transition-all duration-500 ${activeJar === 0 ? "w-5 bg-[#FED68C]" : "w-[5px] bg-white/30"}`} />
               <div className={`h-[5px] rounded-full transition-all duration-500 ${activeJar === 1 ? "w-5 bg-[#FED68C]" : "w-[5px] bg-white/30"}`} />
+              <div className={`h-[5px] rounded-full transition-all duration-500 ${activeJar === 2 ? "w-5 bg-[#FED68C]" : "w-[5px] bg-white/30"}`} />
             </div>
           </div>
 

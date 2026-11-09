@@ -1,20 +1,7 @@
-import type { Metadata } from "next";
-import Navbar from "@/components/Global/Navbar";
-import Footer from "@/components/Global/Footer";
-import DiwaliLanding from "@/components/Diwali/DiwaliLanding";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Diwali Sale | Extra 15% Off + The Classic Duo Gift Box",
-  description:
-    "Gift something real this Diwali. The Classic Duo gift box has Earth Crunch and Smoked Cacao peanut butter, 2 × 500g. Extra 15% off everything till 8 Nov, applied automatically. Free shipping and Cash on Delivery.",
-};
-
+// The Diwali sale ended on 8 Nov 2026. Old links to /diwali (posts, ads)
+// now land on The Classic Duo gift box page instead of a dead sale page.
 export default function DiwaliPage() {
-  return (
-    <>
-      <Navbar />
-      <DiwaliLanding />
-      <Footer />
-    </>
-  );
+  permanentRedirect("/products/snava-gift-box");
 }
