@@ -58,9 +58,9 @@ export const DESERT_CACAO: CatalogItem = {
   facts: ["Millet crisps in every spoon", "Milk chocolate + roasted peanuts", "Zero trans fat"],
 };
 
-// Shown on Desert Cacao and The Chocoholic Box while the first batch is
-// being labelled. Set to false once orders dispatch normally.
-export const SHIPS_AFTER_DIWALI = true;
+// Shown on Desert Cacao and The Chocoholic Box while the first batch was
+// being labelled. Off since Diwali ended — orders dispatch normally.
+export const SHIPS_AFTER_DIWALI = false;
 
 // Shopify fixed bundle: 1 × Earth Crunch + 1 × Smoked Cacao.
 // Stock is drawn from the two jar products automatically, so the gift box

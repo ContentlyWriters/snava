@@ -54,7 +54,7 @@ const products = [
   {
     id: "desert",
     slug: "desert-cacao",
-    tag: "New · Ships after Diwali",
+    tag: "New",
     name: "Desert Cacao",
     price: "₹299",
     oldPrice: "₹469",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Global/Navbar";
 import Footer from "@/components/Global/Footer";
 import GiftBox from "@/components/Product/GiftBox";
-import { CACAO_BOX, DESERT_CACAO, SMOKED_CACAO } from "@/lib/products";
+import { CACAO_BOX, DESERT_CACAO, SHIPS_AFTER_DIWALI, SMOKED_CACAO } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "The Chocoholic Box | Smoked Cacao + Desert Cacao Peanut Butter",
@@ -21,7 +21,7 @@ export default function ChocoholicBoxPage() {
         titleBottom="Box"
         insideHeading="One smooth. One with crunch."
         ctaLabel="Add Chocoholic Box to Cart"
-        shipsAfterDiwali
+        shipsAfterDiwali={SHIPS_AFTER_DIWALI}
       />
       <Footer />
     </>
