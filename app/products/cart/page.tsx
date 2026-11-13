@@ -32,6 +32,13 @@ interface DisplayLine {
   altText: string;
 }
 
+// The combo boxes show both jars in the cart (Shopify only has one jar photo
+// for the bundle products).
+const BOX_IMAGES: Record<string, string> = {
+  "snava-gift-box": "/classic-duo.png",
+  "chocoholic-box": "/chocoholic-box.png",
+};
+
 function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
   return cart.lines.edges.map(({ node }: { node: ShopifyCartLine }) => {
     const { merchandise } = node;
@@ -60,7 +67,7 @@ function toDisplayLines(cart: ShopifyCart): DisplayLine[] {
       lineSubtotal,
       lineTotal,
       discountLabel,
-      image: img?.url ?? "",
+      image: BOX_IMAGES[merchandise.product.handle] ?? img?.url ?? "",
       altText: img?.altText ?? merchandise.product.title,
     };
   });
