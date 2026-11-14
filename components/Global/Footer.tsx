@@ -90,6 +90,15 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
+                  href="/track"
+                  className="text-[#F3ECE2]/50 hover:text-[#F3ECE2] transition-colors text-sm"
+                >
+                  Track Your Order
+                </Link>
+              </li>
+
+              <li>
+                <Link
                   href="/policy/shipping-policy"
                   className="text-[#F3ECE2]/50 hover:text-[#F3ECE2] transition-colors text-sm"
                 >

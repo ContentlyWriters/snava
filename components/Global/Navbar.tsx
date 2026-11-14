@@ -477,6 +477,28 @@ export default function Navbar() {
                 <span>→</span>
               </Link>
 
+              <Link
+                href="/track"
+                onClick={() => setMenuOpen(false)}
+                className="
+                  flex
+                  items-center
+                  justify-between
+                  rounded-2xl
+                  px-5
+                  py-4
+                "
+                style={{
+                  background: "rgba(111,55,30,0.05)",
+                }}
+              >
+                <span className="font-medium text-[#6F371E]">
+                  Track Order
+                </span>
+
+                <span>→</span>
+              </Link>
+
 
             </div>
 

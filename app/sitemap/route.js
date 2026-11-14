@@ -15,6 +15,7 @@ export async function generateSitemap() {
      { loc: "/products/snava-gift-box", lastmod: "2026-10-24", priority: 0.9 },
      { loc: "/products/desert-cacao", lastmod: "2026-11-01", priority: 0.9 },
      { loc: "/products/chocoholic-box", lastmod: "2026-11-01", priority: 0.9 },
+     { loc: "/track", lastmod: "2026-11-14", priority: 0.5 },
    
   ];
 
