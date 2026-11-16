@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { addToCart } from "@/lib/shopify";
 import { track } from "@/lib/analytics";
 import { SALE, effectivePrice, formatINR, isSaleActive } from "@/lib/sale";
+import StickyAddToCart from "@/components/Shop/StickyAddToCart";
 
 const EARTH_CRUNCH_VARIANT_GID = "gid://shopify/ProductVariant/51358572642610";
 
@@ -44,10 +45,8 @@ const nutritionStrip = [
 ];
 
 const ingredients = [
-  "Low Cholesterol",
   "No Preservatives",
   "Vegetable Protein",
-  "Guilt-Free",
   "Trans Fat Free",
   "no palm oil ",
 ];
@@ -123,6 +122,11 @@ export default function ProductPage() {
     "/wb_jar1.png",
     "/label-earth_crunch.png",
   ];
+  const productImageAlts = [
+    "Earth Crunch crunchy peanut butter jar, 500g, front",
+    "Earth Crunch jar, 500g, back label and front",
+    "Earth Crunch nutrition table",
+  ];
 
   return (
     <main className="bg-[#F3ECE2] overflow-hidden">
@@ -149,13 +153,14 @@ export default function ProductPage() {
                 <button
                   key={index}
                   onClick={() => setActiveImage(index)}
+                    aria-label={`Show ${productImageAlts[index]}`}
                   className={`relative w-14 h-14 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 ${
                     activeImage === index
                       ? "ring-2 ring-[#FED68C] scale-105"
                       : "opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={img} alt={`Product ${index + 1}`} fill className="object-cover" />
+                  <Image src={img} alt="" fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -164,7 +169,7 @@ export default function ProductPage() {
             <div className="relative w-full h-[300px]">
               <Image
                 src={productImages[activeImage]}
-                alt="Earth Crunch Peanut Butter"
+                alt={productImageAlts[activeImage]}
                 fill
                 priority
                 className="object-contain"
@@ -173,7 +178,7 @@ export default function ProductPage() {
 
             {/* Floating label */}
             <div
-              className="absolute bottom-4 right-4 rounded-[12px] px-3 py-2"
+              className="hidden absolute bottom-4 right-4 rounded-[12px] px-3 py-2"
               style={{
                 background: "rgba(111,55,30,0.82)",
                 backdropFilter: "blur(12px)",
@@ -318,6 +323,7 @@ export default function ProductPage() {
 
               {/* CTA — full width */}
               <button
+                id="mobile-add-to-cart"
                 onClick={handleAddToCart}
                 disabled={adding}
                 className="flex-1 flex items-center justify-center gap-2 rounded-full font-bold uppercase transition-all duration-300 disabled:opacity-60"
@@ -374,13 +380,15 @@ export default function ProductPage() {
             <p className="font-[family-name:var(--font-playfair)] italic mb-1" style={{ color: "rgba(243,236,226,0.22)", fontSize: "1rem", letterSpacing: "0.15em" }}>
               snava.
             </p>
-            <h1
+            <p
+              role="heading"
+              aria-level={1}
               className="font-[family-name:var(--font-playfair)] font-bold text-[#F3ECE2] leading-[1.05] mb-2"
               style={{ fontSize: "clamp(2.6rem, 5.5vw, 4rem)", letterSpacing: "-0.01em" }}
             >
               Earth<br />
               <em className="italic" style={{ color: "#8FD4F1" }}>Crunch</em>
-            </h1>
+            </p>
             <p className="text-[0.78rem] font-light mb-7" style={{ color: "rgba(143,212,241,0.55)", letterSpacing: "0.04em" }}>
               Clean ingredients. Real crunch. Zero compromise.
             </p>
@@ -478,14 +486,15 @@ export default function ProductPage() {
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
+                    aria-label={`Show ${productImageAlts[index]}`}
                     className={`relative w-20 h-20 rounded-xl overflow-hidden transition-all duration-300 ${activeImage === index ? "ring-2 ring-[#FED68C] scale-105" : "opacity-70 hover:opacity-100"}`}
                   >
-                    <Image src={img} alt={`Product ${index + 1}`} fill className="object-cover" />
+                    <Image src={img} alt="" fill sizes="80px" className="object-cover" />
                   </button>
                 ))}
               </div>
               <div className="relative flex-1 w-full h-[650px]">
-                <Image src={productImages[activeImage]} alt="Earth Crunch Peanut Butter" fill priority className="object-contain" />
+                <Image src={productImages[activeImage]} alt={productImageAlts[activeImage]} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-contain" />
               </div>
             </div>
             <div className="absolute bottom-7 right-7 rounded-[14px] px-4 py-2.5" style={{ background: "rgba(111,55,30,0.82)", backdropFilter: "blur(12px)", border: "1px solid rgba(143,212,241,0.18)" }}>
@@ -661,6 +670,13 @@ export default function ProductPage() {
           </div>
         </div>
       </section>
+      <StickyAddToCart
+        targetId="mobile-add-to-cart"
+        name={`${qty} × Earth Crunch`}
+        price={formatINR(totalPrice)}
+        adding={adding}
+        onAdd={handleAddToCart}
+      />
     </main>
   );
 }

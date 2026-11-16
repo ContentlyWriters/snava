@@ -2,7 +2,7 @@
 # Disallow crawling
 User-agent: *
 
-Disallow: /policy/
+
 
 
 
@@ -15,4 +15,4 @@ Allow: /products/earth-crunch
 
 
 # Sitemap location for better indexing
-Sitemap: https://www.snava.in/sitemap
+Sitemap: https://www.snava.in/sitemap.xml

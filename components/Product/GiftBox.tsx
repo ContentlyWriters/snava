@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
-import { SALE, effectivePrice, isSaleActive } from "@/lib/sale";
+import { SALE, effectivePrice, formatINR, isSaleActive } from "@/lib/sale";
+import StickyAddToCart from "@/components/Shop/StickyAddToCart";
 import { EARTH_CRUNCH, GIFT_BOX, SMOKED_CACAO, type CatalogItem } from "@/lib/products";
 import PriceTag from "@/components/Shop/PriceTag";
 import GiftBoxVisual from "@/components/Shop/GiftBoxVisual";
@@ -57,7 +58,7 @@ export default function GiftBox({
           >
             <GiftBoxVisual className="aspect-square max-w-[520px]" eager jars={inside} />
             <div
-              className="absolute bottom-5 right-5 md:bottom-7 md:right-7 rounded-[14px] px-4 py-2.5"
+              className="hidden md:block absolute bottom-5 right-5 md:bottom-7 md:right-7 rounded-[14px] px-4 py-2.5"
               style={{
                 background: "rgba(111,55,30,0.82)",
                 backdropFilter: "blur(12px)",
@@ -147,6 +148,7 @@ export default function GiftBox({
               </div>
 
               <button
+                id="mobile-add-to-cart"
                 onClick={() => add(box, qty)}
                 disabled={adding}
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 rounded-full font-bold uppercase transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60"
@@ -203,7 +205,7 @@ export default function GiftBox({
               style={{ background: i === 0 ? "#A2452B" : "#6F371E" }}
             >
               <div className="relative h-[260px] mb-6">
-                <Image src={p.image} alt={p.name} fill sizes="(min-width: 768px) 40vw, 90vw" className="object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.4)]" />
+                <Image src={p.image} alt={`${p.name} peanut butter jar, 500g`} fill sizes="(min-width: 768px) 40vw, 90vw" className="object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.4)]" />
               </div>
               <h3
                 className="font-[family-name:var(--font-playfair)] font-black text-[#F3ECE2] leading-none mb-2"
@@ -228,6 +230,13 @@ export default function GiftBox({
           ))}
         </div>
       </section>
+      <StickyAddToCart
+        targetId="mobile-add-to-cart"
+        name={`${qty} × ${box.name}`}
+        price={formatINR(effectivePrice(box.price) * qty)}
+        adding={adding}
+        onAdd={() => add(box, qty)}
+      />
     </main>
   );
 }

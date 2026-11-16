@@ -1,22 +1,24 @@
 // app/sitemap/route.js
 export async function generateSitemap() {
-  const baseUrl = "https://snava.in";
-  
+  const baseUrl = "https://www.snava.in";
+
+  // lastmod = the date each page's content last changed. Update the date
+  // when you change a page. /track and the cart are noindex, so not listed.
   const staticUrls = [
-    { loc: "/", lastmod: "2024-11-26", priority: 1.0 },
-    { loc: "/policy/", lastmod: "2024-11-26", priority: 0.6 },
-   
+    { loc: "/", lastmod: "2026-11-16", priority: 1.0 },
+    { loc: "/labreport", lastmod: "2026-11-02", priority: 0.7 },
+    { loc: "/policy/shipping-policy", lastmod: "2026-07-12", priority: 0.4 },
+    { loc: "/policy/refund-cancellation-policy", lastmod: "2026-07-12", priority: 0.4 },
+    { loc: "/policy/privacy-policy", lastmod: "2026-07-12", priority: 0.3 },
+    { loc: "/policy/terms-conditions", lastmod: "2026-07-12", priority: 0.3 },
   ];
 
   const dynamicUrls = [
-     
-    { loc: "/products/smoked-cacao", lastmod: "2024-11-25", priority: 0.9 },
-     { loc: "/products/earth-crunch", lastmod: "2024-11-25", priority: 0.9 },
-     { loc: "/products/snava-gift-box", lastmod: "2026-10-24", priority: 0.9 },
-     { loc: "/products/desert-cacao", lastmod: "2026-11-01", priority: 0.9 },
-     { loc: "/products/chocoholic-box", lastmod: "2026-11-01", priority: 0.9 },
-     { loc: "/track", lastmod: "2026-11-14", priority: 0.5 },
-   
+    { loc: "/products/earth-crunch", lastmod: "2026-11-16", priority: 0.9 },
+    { loc: "/products/smoked-cacao", lastmod: "2026-11-16", priority: 0.9 },
+    { loc: "/products/desert-cacao", lastmod: "2026-11-16", priority: 0.9 },
+    { loc: "/products/snava-gift-box", lastmod: "2026-11-16", priority: 0.9 },
+    { loc: "/products/chocoholic-box", lastmod: "2026-11-16", priority: 0.9 },
   ];
 
   const urls = [...staticUrls, ...dynamicUrls];

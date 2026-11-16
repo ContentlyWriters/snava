@@ -107,13 +107,13 @@ export default function Hero() {
                 animation: "fadeUp 0.9s 0.5s both",
               }}
             >
-              The Best
+              Craft
               <br />
               <em className="text-[#FED68C] not-italic">
-                Peanut Butter
+                Peanut Butter,
               </em>
               <br />
-              in India
+              Made the Honest Way
               <span className="text-[#8FD4F1]">.</span>
             </h1>
             <p
@@ -126,7 +126,7 @@ export default function Hero() {
               className="text-[#F3ECE2]/70 font-light max-w-sm lg:max-w-lg mx-auto lg:mx-0 mb-8 lg:mb-10 leading-relaxed text-sm md:text-base lg:text-lg"
               style={{ animation: "fadeUp 0.9s 0.7s both" }}
             >
-              High Protein, 100% Natural Peanut Butter — Crafted for India
+              Earth Crunch has no palm oil. Chocolate and smoked cacao flavours, made with natural ingredients.
             </p>
 
             {/* Buttons — mobile pe full width stack, desktop pe side by side */}

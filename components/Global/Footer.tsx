@@ -151,15 +151,7 @@ export default function Footer() {
             </p>
 
             <p className="text-[#F3ECE2]/30 text-[11px] text-center md:text-right">
-              ⚡ Powered by{" "}
-              <a
-                href="https://contentlywriters.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#5b6cf2]/70 underline underline-offset-2 hover:text-[#FED68C] transition-colors"
-              >
-                ContentlyWriters.com
-              </a>
+              FSSAI Lic. No. 12226027000402
             </p>
           </div>
         </div>

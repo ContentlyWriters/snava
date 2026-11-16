@@ -1,16 +1,22 @@
 import EarthCrunch from "@/components/Product/EarthCrunch";
 import Footer from "@/components/Global/Footer";
 import type { Metadata } from "next";
+import { pageSeo, productSchema } from "@/lib/seo";
+import JsonLd from "@/components/Seo/JsonLd";
+import { EARTH_CRUNCH } from "@/lib/products";
 import Navbar from "@/components/Global/Navbar";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageSeo({
   title: "Earth Crunch Peanut Butter 26g Protein, 91% Peanuts",
   description:
-    "Snava Earth Crunch natural crunchy peanut butter with 91% roasted peanuts, 26g protein, zero trans fat, no palm oil or refined sugar. 500g at ₹269.",
-};
+    "Earth Crunch crunchy peanut butter, 500g at ₹269. Made with roasted peanuts and no palm oil. Free shipping on combos.",
+  path: "/products/earth-crunch",
+  image: "/og/earth-crunch.jpg",
+});
 export default function EarthCrunchPage() {
   return  <>
         <Navbar />
+        <JsonLd data={productSchema(EARTH_CRUNCH, String(metadata.description), ["/EARTH-CRUNCH.png", "/wb_jar1.png", "/label-earth_crunch.png"])} />
         <EarthCrunch />
          <Footer />
       </>

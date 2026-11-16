@@ -3,11 +3,13 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 import Analytics from "@/components/Global/Analytics";
+import { HOME_DESCRIPTION, HOME_TITLE, SITE_URL, pageSeo } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Best Peanut Butter in India | Natural, High Protein | Snava ",
-  description:
-    "Discover India's best craft peanut butter. High protein, zero trans fat, no palm oil. 100% natural, lab-tested. Free shipping on combos. Order now.",
+  metadataBase: new URL(SITE_URL),
+  ...pageSeo({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
+  // Pages that don't set their own canonical shouldn't inherit the homepage's.
+  alternates: undefined,
 };
 
 // Set these in .env.local to turn on Meta Pixel / GA4 tracking.

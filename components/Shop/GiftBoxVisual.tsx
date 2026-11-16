@@ -46,7 +46,7 @@ export default function GiftBoxVisual({
         <div className="relative w-[44%] h-[88%] -rotate-[5deg]">
           <Image
             src={jars[0].image}
-            alt={`${jars[0].name} peanut butter jar`}
+            alt={`${jars[0].name} and ${jars[1].name} peanut butter jars in a gift box, 2 × 500g`}
             fill
             sizes="(min-width: 1024px) 260px, 45vw"
             className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.45)]"
@@ -57,7 +57,7 @@ export default function GiftBoxVisual({
         <div className="relative w-[44%] h-[88%] rotate-[5deg]">
           <Image
             src={jars[1].image}
-            alt={`${jars[1].name} peanut butter jar`}
+            alt=""
             fill
             sizes="(min-width: 1024px) 260px, 45vw"
             className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.45)]"
