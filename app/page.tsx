@@ -8,6 +8,7 @@ import Footer from "@/components/Global/Footer";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import DiwaliBanner from "@/components/Home/DiwaliBanner";
 import Combos from "@/components/Home/Combos";
+import ShopTheReel from "@/components/Home/ShopTheReel";
 import type { Metadata } from "next";
 import JsonLd from "@/components/Seo/JsonLd";
 import { HOME_DESCRIPTION, HOME_TITLE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, pageSeo } from "@/lib/seo";
@@ -24,6 +25,7 @@ export default function Home() {
       <DiwaliBanner />
       <Products />
       <Combos />
+      <ShopTheReel />
       <ReviewSection />
       <FlavorNotes />
       <Story />
