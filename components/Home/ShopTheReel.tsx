@@ -45,7 +45,7 @@ function ReelCard({ reel }: { reel: Reel }) {
   }, [loaded]);
 
   return (
-    <div className="snap-start shrink-0 w-[68vw] sm:w-[260px] flex flex-col">
+    <div className="snap-center md:snap-start shrink-0 w-[68vw] sm:w-[260px] flex flex-col">
       <div className="relative aspect-[9/16] rounded-[22px] overflow-hidden bg-[#3d1c08] shadow-[0_18px_40px_rgba(61,28,8,0.25)]">
         <video
           ref={videoRef}
@@ -109,7 +109,10 @@ function ProductBuy({ p }: { p: CatalogItem }) {
 
 // Instagram's own embedded player for a post/reel link. The iframe is only
 // added when the card comes near the screen, and grows to the height
-// Instagram reports so nothing is cut off.
+// Instagram reports so nothing is cut off. Instagram's top bar (account
+// names, music credits, View profile) gets squashed in a narrow card, so it
+// is hidden; the product card underneath names what's in the video.
+const IG_HEADER = 54;
 function embedUrl(link: string) {
   const m = link.match(/instagram\.com\/(p|reel|reels|tv)\/([A-Za-z0-9_-]+)/);
   if (!m) return null;
@@ -157,11 +160,11 @@ function InstagramCard({ reel }: { reel: Reel }) {
 
   if (!url) return null;
   return (
-    <div className="snap-start shrink-0 w-[86vw] max-w-[330px] flex flex-col">
+    <div className="snap-center md:snap-start shrink-0 w-[86vw] max-w-[330px] flex flex-col">
       <div
         ref={boxRef}
         className="relative rounded-[22px] overflow-hidden bg-white shadow-[0_18px_40px_rgba(61,28,8,0.18)]"
-        style={{ height }}
+        style={{ height: height - IG_HEADER }}
       >
         {show ? (
           <iframe
@@ -171,7 +174,8 @@ function InstagramCard({ reel }: { reel: Reel }) {
             loading="lazy"
             scrolling="no"
             allow="autoplay; encrypted-media; picture-in-picture; clipboard-write"
-            className="absolute inset-0 w-full h-full border-0"
+            className="absolute left-0 w-full border-0"
+            style={{ top: -IG_HEADER, height }}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-[#6F371E]/60">
@@ -199,7 +203,7 @@ export default function ShopTheReel() {
           Real people. Real spoons.
         </h2>
       </div>
-      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-5 md:px-12 pb-4 [scrollbar-width:thin]">
+      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-[calc((100vw-min(86vw,330px))/2)] md:px-12 md:scroll-px-12 pb-4 [scrollbar-width:thin]">
         {REELS.map((r) =>
           r.instagram ? (
             <InstagramCard key={r.instagram} reel={r} />
