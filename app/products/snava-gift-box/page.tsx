@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { pageSeo, productSchema } from "@/lib/seo";
 import JsonLd from "@/components/Seo/JsonLd";
+import ProductReviews from "@/components/Product/ProductReviews";
+import { getProductReviews } from "@/lib/judgeme";
 import { GIFT_BOX } from "@/lib/products";
 import Navbar from "@/components/Global/Navbar";
 import Footer from "@/components/Global/Footer";
@@ -14,13 +16,18 @@ export const metadata: Metadata = pageSeo({
   image: "/og/classic-duo.jpg",
 });
 
-export default function GiftBoxPage() {
+// Re-check Judge.me for new reviews every hour.
+export const revalidate = 3600;
+
+export default async function GiftBoxPage() {
+  const reviews = await getProductReviews("snava-gift-box");
   return (
     <>
       <Navbar />
-        <JsonLd data={productSchema(GIFT_BOX, String(metadata.description), ["/classic-duo.png"])} />
+        <JsonLd data={productSchema(GIFT_BOX, String(metadata.description), ["/classic-duo.png"], reviews)} />
       <GiftBox />
-      <Footer />
+      <ProductReviews name={GIFT_BOX.name} reviews={reviews} />
+        <Footer />
     </>
   );
 }

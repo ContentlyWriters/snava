@@ -2,6 +2,8 @@ import DesertCacao from "@/components/Product/DesertCacao";
 import type { Metadata } from "next";
 import { pageSeo, productSchema } from "@/lib/seo";
 import JsonLd from "@/components/Seo/JsonLd";
+import ProductReviews from "@/components/Product/ProductReviews";
+import { getProductReviews } from "@/lib/judgeme";
 import { DESERT_CACAO } from "@/lib/products";
 import Footer from "@/components/Global/Footer";
 import Navbar from "@/components/Global/Navbar";
@@ -14,13 +16,18 @@ export const metadata: Metadata = pageSeo({
   image: "/og/desert-cacao.jpg",
 });
 
-export default function DesertCacaoPage() {
+// Re-check Judge.me for new reviews every hour.
+export const revalidate = 3600;
+
+export default async function DesertCacaoPage() {
+  const reviews = await getProductReviews("desert-cacao");
   return (
     <>
       <Navbar />
-        <JsonLd data={productSchema(DESERT_CACAO, String(metadata.description), ["/DESERT-CACAO.png", "/desert-cacao-front-back.png", "/label-desert-cacao.png"])} />
+        <JsonLd data={productSchema(DESERT_CACAO, String(metadata.description), ["/DESERT-CACAO.png", "/desert-cacao-front-back.png", "/label-desert-cacao.png"], reviews)} />
       <DesertCacao />
-      <Footer />
+      <ProductReviews name={DESERT_CACAO.name} reviews={reviews} />
+        <Footer />
     </>
   );
 }

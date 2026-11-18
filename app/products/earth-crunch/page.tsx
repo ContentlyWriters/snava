@@ -3,6 +3,8 @@ import Footer from "@/components/Global/Footer";
 import type { Metadata } from "next";
 import { pageSeo, productSchema } from "@/lib/seo";
 import JsonLd from "@/components/Seo/JsonLd";
+import ProductReviews from "@/components/Product/ProductReviews";
+import { getProductReviews } from "@/lib/judgeme";
 import { EARTH_CRUNCH } from "@/lib/products";
 import Navbar from "@/components/Global/Navbar";
 
@@ -13,12 +15,17 @@ export const metadata: Metadata = pageSeo({
   path: "/products/earth-crunch",
   image: "/og/earth-crunch.jpg",
 });
-export default function EarthCrunchPage() {
+// Re-check Judge.me for new reviews every hour.
+export const revalidate = 3600;
+
+export default async function EarthCrunchPage() {
+  const reviews = await getProductReviews("earth-crunch");
   return  <>
         <Navbar />
-        <JsonLd data={productSchema(EARTH_CRUNCH, String(metadata.description), ["/EARTH-CRUNCH.png", "/wb_jar1.png", "/label-earth_crunch.png"])} />
+        <JsonLd data={productSchema(EARTH_CRUNCH, String(metadata.description), ["/EARTH-CRUNCH.png", "/wb_jar1.png", "/label-earth_crunch.png"], reviews)} />
         <EarthCrunch />
-         <Footer />
+         <ProductReviews name={EARTH_CRUNCH.name} reviews={reviews} />
+        <Footer />
       </>
   ;
   

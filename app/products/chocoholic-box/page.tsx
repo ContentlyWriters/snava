@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { pageSeo, productSchema } from "@/lib/seo";
 import JsonLd from "@/components/Seo/JsonLd";
+import ProductReviews from "@/components/Product/ProductReviews";
+import { getProductReviews } from "@/lib/judgeme";
 import Navbar from "@/components/Global/Navbar";
 import Footer from "@/components/Global/Footer";
 import GiftBox from "@/components/Product/GiftBox";
@@ -14,11 +16,15 @@ export const metadata: Metadata = pageSeo({
   image: "/og/chocoholic-box.jpg",
 });
 
-export default function ChocoholicBoxPage() {
+// Re-check Judge.me for new reviews every hour.
+export const revalidate = 3600;
+
+export default async function ChocoholicBoxPage() {
+  const reviews = await getProductReviews("chocoholic-box");
   return (
     <>
       <Navbar />
-        <JsonLd data={productSchema(CACAO_BOX, String(metadata.description), ["/chocoholic-box.png"])} />
+        <JsonLd data={productSchema(CACAO_BOX, String(metadata.description), ["/chocoholic-box.png"], reviews)} />
       <GiftBox
         box={CACAO_BOX}
         inside={[SMOKED_CACAO, DESERT_CACAO]}
@@ -28,7 +34,8 @@ export default function ChocoholicBoxPage() {
         ctaLabel="Add Chocoholic Box to Cart"
         shipsAfterDiwali={SHIPS_AFTER_DIWALI}
       />
-      <Footer />
+      <ProductReviews name={CACAO_BOX.name} reviews={reviews} />
+        <Footer />
     </>
   );
 }
