@@ -10,7 +10,7 @@ export const SITE_NAME = "Snava";
 
 export const HOME_TITLE = "Craft Peanut Butter in India | Natural Ingredients | Snava";
 export const HOME_DESCRIPTION =
-  "Craft peanut butter from Snava. Earth Crunch has no palm oil, and our chocolate and smoked cacao spreads are made with natural ingredients. See our lab reports. Free shipping on combos.";
+  "Craft peanut butter from Jaipur: Earth Crunch, Smoked Cacao and Desert Cacao. Roasted peanuts, real ingredients, lab-tested. Free delivery from ₹440.";
 
 export function pageSeo({
   title,
