@@ -30,7 +30,7 @@ export default function Footer() {
             </p>
 
             <address className="mt-4 not-italic text-sm leading-6 text-[#F3ECE2]/45 max-w-xs">
-              47/124, Kiran Path Mansarovar,
+              47/124, Moti Path, Kiran Path Mansarovar,
               <br />
               Jaipur, Rajasthan, India
             </address>
