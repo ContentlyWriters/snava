@@ -28,6 +28,12 @@ export default function Footer() {
               Premium food crafted with real ingredients, bold flavours, and
               absolutely no compromises — every single time.
             </p>
+
+            <address className="mt-4 not-italic text-sm leading-6 text-[#F3ECE2]/45 max-w-xs">
+              47/124, Kiran Path Mansarovar,
+              <br />
+              Jaipur, Rajasthan, India
+            </address>
           </div>
 
           {/* Explore */}
